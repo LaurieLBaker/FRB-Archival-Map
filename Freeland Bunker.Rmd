@@ -10,6 +10,7 @@ output: html_document
 library(tidyverse)
 #install.packages("readxl")
 library(readxl)
+library("lubridate")
 ```
 
 ```{r import-datasets}
@@ -32,8 +33,6 @@ journal_1886 <- read_excel("Dataset/journal_1886.xlsx")
 
 
 ```{r bind-rows}
-library(tidyverse)
-
 journal_1871_1872$journal <- 1
 journal_1873$journal <- 2
 journal_1874$journal <- 3
@@ -48,12 +47,44 @@ journal_1882$journal <- 11
 journal_1883$journal <- 12
 journal_1884$journal <- 13
 journal_1885$journal <- 14
-journal_1886$journal <- 15
+
 
 journals <- dplyr::bind_rows(journal_1871_1872, journal_1873, journal_1874, 
                              journal_1875, journal_1876, journal_1877, 
                              journal_1878, journal_1879, journal_1880, 
                              journal_1881, journal_1882, journal_1883,
-                             journal_1884, journal_1885, journal_1886)
+                             journal_1884, journal_1885)
 ```
 
+```{r select-data}
+journals_subset <- journals %>%
+  select(date_mdy, journal_entry, location) %>%
+  filter(location != "NA") %>%
+  separate_longer_delim(location, delim = ", ") %>%
+  separate_longer_delim(location, delim = ",") 
+```
+
+```{r mutate-data}
+journals_subset <- journals_subset %>%
+  mutate(date_mdy = mdy(date_mdy),
+           year = year(date_mdy),
+           month = month(date_mdy))
+```
+
+```{r show-location}
+journals_subset_loc <- journals_subset  %>%
+  count(location) %>%
+  arrange(desc(n))
+```
+
+```{r show-distinct-loc}
+journals_subset_loc %>%
+  filter(str_detect(string = location, pattern = "Cra")) %>%
+  distinct(location)
+```
+
+```{r mutate-name-loc}
+journals_subset_loc <- journals_subset_loc %>%
+  separate_rows(location, sep = ",") %>%
+  mutate(location = case_when(location %in% c("Cranberry Isles", "Cramberry Isle", "Cranberry Isles") ~ "Cranberry Isles", TRUE ~ location)) 
+```

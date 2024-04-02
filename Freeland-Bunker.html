@@ -371,7 +371,8 @@ library(tidyverse)</code></pre>
 ## ✖ dplyr::lag()    masks stats::lag()
 ## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 <pre class="r"><code>#install.packages(&quot;readxl&quot;)
-library(readxl)</code></pre>
+library(readxl)
+library(&quot;lubridate&quot;)</code></pre>
 <pre class="r"><code>journal_1871_1872 &lt;- read_excel(&quot;Dataset/journal_1871_1872.xlsx&quot;)
 journal_1873 &lt;- read_excel(&quot;Dataset/journal_1873.xlsx&quot;)
 journal_1874 &lt;- read_excel(&quot;Dataset/journal_1874.xlsx&quot;)
@@ -389,9 +390,7 @@ journal_1883 &lt;- read_excel(&quot;Dataset/journal_1883.xlsx&quot;)
 journal_1884 &lt;- read_excel(&quot;Dataset/journal_1884.xlsx&quot;)
 journal_1885 &lt;- read_excel(&quot;Dataset/journal_1885.xlsx&quot;)
 journal_1886 &lt;- read_excel(&quot;Dataset/journal_1886.xlsx&quot;)</code></pre>
-<pre class="r"><code>library(tidyverse)
-
-journal_1871_1872$journal &lt;- 1
+<pre class="r"><code>journal_1871_1872$journal &lt;- 1
 journal_1873$journal &lt;- 2
 journal_1874$journal &lt;- 3
 journal_1875$journal &lt;- 4
@@ -405,13 +404,44 @@ journal_1882$journal &lt;- 11
 journal_1883$journal &lt;- 12
 journal_1884$journal &lt;- 13
 journal_1885$journal &lt;- 14
-journal_1886$journal &lt;- 15
+
 
 journals &lt;- dplyr::bind_rows(journal_1871_1872, journal_1873, journal_1874, 
                              journal_1875, journal_1876, journal_1877, 
                              journal_1878, journal_1879, journal_1880, 
                              journal_1881, journal_1882, journal_1883,
-                             journal_1884, journal_1885, journal_1886)</code></pre>
+                             journal_1884, journal_1885)</code></pre>
+<pre class="r"><code>journals_subset &lt;- journals %&gt;%
+  select(date_mdy, journal_entry, location) %&gt;%
+  filter(location != &quot;NA&quot;) %&gt;%
+  separate_longer_delim(location, delim = &quot;, &quot;) %&gt;%
+  separate_longer_delim(location, delim = &quot;,&quot;) </code></pre>
+<pre class="r"><code>journals_subset &lt;- journals_subset %&gt;%
+  mutate(date_mdy = mdy(date_mdy),
+           year = year(date_mdy),
+           month = month(date_mdy))</code></pre>
+<pre><code>## Warning: There was 1 warning in `mutate()`.
+## ℹ In argument: `date_mdy = mdy(date_mdy)`.
+## Caused by warning:
+## !  10 failed to parse.</code></pre>
+<pre class="r"><code>journals_subset_loc &lt;- journals_subset  %&gt;%
+  count(location) %&gt;%
+  arrange(desc(n))</code></pre>
+<pre class="r"><code>journals_subset_loc %&gt;%
+  filter(str_detect(string = location, pattern = &quot;Cra&quot;)) %&gt;%
+  distinct(location)</code></pre>
+<pre><code>## # A tibble: 6 × 1
+##   location          
+##   &lt;chr&gt;             
+## 1 &quot;Cranberry Isles&quot; 
+## 2 &quot;Crabtrees Neck&quot;  
+## 3 &quot;Crabtrees stone&quot; 
+## 4 &quot;Cramberry Isle&quot;  
+## 5 &quot;Cranberrry Isles&quot;
+## 6 &quot;Cranberry Isles &quot;</code></pre>
+<pre class="r"><code>journals_subset_loc &lt;- journals_subset_loc %&gt;%
+  separate_rows(location, sep = &quot;,&quot;) %&gt;%
+  mutate(location = case_when(location %in% c(&quot;Cranberry Isles&quot;, &quot;Cramberry Isle&quot;, &quot;Cranberry Isles&quot;) ~ &quot;Cranberry Isles&quot;, TRUE ~ location)) </code></pre>
 
 
 
