@@ -416,7 +416,7 @@ journals &lt;- dplyr::bind_rows(journal_1871_1872, journal_1873, journal_1874,
   filter(location != &quot;NA&quot;) %&gt;%
   separate_longer_delim(location, delim = &quot;, &quot;) %&gt;%
   separate_longer_delim(location, delim = &quot;,&quot;) </code></pre>
-<pre class="r"><code>journals_subset &lt;- journals_subset %&gt;%
+<pre class="r"><code>journals_subset &lt;- journals_subset  %&gt;%
   mutate(date_mdy = mdy(date_mdy),
            year = year(date_mdy),
            month = month(date_mdy))</code></pre>
@@ -427,6 +427,10 @@ journals &lt;- dplyr::bind_rows(journal_1871_1872, journal_1873, journal_1874,
 <pre class="r"><code>journals_subset_loc &lt;- journals_subset  %&gt;%
   count(location) %&gt;%
   arrange(desc(n))</code></pre>
+<pre class="r"><code>journals_subset_loc_year &lt;- journals_subset %&gt;%
+  mutate(year = case_when(year %in% 181 ~ 1881, TRUE ~ year)) %&gt;%
+  group_by(year) %&gt;%
+  count(location)</code></pre>
 <pre class="r"><code>journals_subset_loc %&gt;%
   filter(str_detect(string = location, pattern = &quot;Cra&quot;)) %&gt;%
   distinct(location)</code></pre>
@@ -439,9 +443,14 @@ journals &lt;- dplyr::bind_rows(journal_1871_1872, journal_1873, journal_1874,
 ## 4 &quot;Cramberry Isle&quot;  
 ## 5 &quot;Cranberrry Isles&quot;
 ## 6 &quot;Cranberry Isles &quot;</code></pre>
-<pre class="r"><code>journals_subset_loc &lt;- journals_subset_loc %&gt;%
-  separate_rows(location, sep = &quot;,&quot;) %&gt;%
-  mutate(location = case_when(location %in% c(&quot;Cranberry Isles&quot;, &quot;Cramberry Isle&quot;, &quot;Cranberry Isles&quot;) ~ &quot;Cranberry Isles&quot;, TRUE ~ location)) </code></pre>
+<pre class="r"><code>#journals_subset_loc &lt;- journals_subset_loc %&gt;%
+  #separate_rows(location, sep = &quot;,&quot;) %&gt;%
+  #filter(location != c(&quot; &quot;, &quot;?Virgin&quot;)) %&gt;%
+  #mutate(location = case_when(location %in% c(&quot;Cranberry Isles&quot;, &quot;Cramberry Isle&quot;, &quot;Cranberry Isles&quot;, &quot;Cranberrry Isles&quot;, &quot;Cranberry Isles &quot;) ~ &quot;Cranberry Isles&quot;, TRUE ~ location))
+  #mutate(location = case_when(location %in% c(&quot;Baker Island&quot;, &quot;Bakers Island&quot;) ~ &quot;Baker Island&quot;))</code></pre>
+<pre class="r"><code>#journals_subset_loc %&gt;%
+  #group_by(location) %&gt;%
+  #summarize(sum(n))</code></pre>
 
 
 
