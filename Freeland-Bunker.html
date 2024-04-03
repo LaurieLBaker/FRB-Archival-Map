@@ -372,7 +372,15 @@ library(tidyverse)</code></pre>
 ## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 <pre class="r"><code>#install.packages(&quot;readxl&quot;)
 library(readxl)
-library(&quot;lubridate&quot;)</code></pre>
+library(&quot;lubridate&quot;)
+#install.packages(&quot;maps&quot;)
+library(maps)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;maps&#39;
+## 
+## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     map</code></pre>
 <pre class="r"><code>journal_1871_1872 &lt;- read_excel(&quot;Dataset/journal_1871_1872.xlsx&quot;)
 journal_1873 &lt;- read_excel(&quot;Dataset/journal_1873.xlsx&quot;)
 journal_1874 &lt;- read_excel(&quot;Dataset/journal_1874.xlsx&quot;)
@@ -389,7 +397,14 @@ journal_1882 &lt;- read_excel(&quot;Dataset/journal_1882.xlsx&quot;)
 journal_1883 &lt;- read_excel(&quot;Dataset/journal_1883.xlsx&quot;)
 journal_1884 &lt;- read_excel(&quot;Dataset/journal_1884.xlsx&quot;)
 journal_1885 &lt;- read_excel(&quot;Dataset/journal_1885.xlsx&quot;)
-journal_1886 &lt;- read_excel(&quot;Dataset/journal_1886.xlsx&quot;)</code></pre>
+journal_1886 &lt;- read_excel(&quot;Dataset/journal_1886.xlsx&quot;)
+location_coordinates &lt;- read_excel(&quot;Dataset/location_coordinates.xlsx&quot;)</code></pre>
+<pre><code>## New names:
+## • `` -&gt; `...1`
+## • `official_name_check` -&gt; `official_name_check...3`
+## • `initials` -&gt; `initials...8`
+## • `official_name_check` -&gt; `official_name_check...10`
+## • `initials` -&gt; `initials...15`</code></pre>
 <pre class="r"><code>journal_1871_1872$journal &lt;- 1
 journal_1873$journal &lt;- 2
 journal_1874$journal &lt;- 3
@@ -431,6 +446,28 @@ journals &lt;- dplyr::bind_rows(journal_1871_1872, journal_1873, journal_1874,
   mutate(year = case_when(year %in% 181 ~ 1881, TRUE ~ year)) %&gt;%
   group_by(year) %&gt;%
   count(location)</code></pre>
+<pre class="r"><code>location_coordinates &lt;- location_coordinates %&gt;%
+  select(location_list, longitude, latitude) %&gt;%
+  filter(longitude != &quot;NA&quot;) %&gt;%
+  rename(location = location_list)</code></pre>
+<pre class="r"><code>loc_df &lt;- journals_subset_loc_year %&gt;%
+  left_join(location_coordinates, by = &quot;location&quot;) %&gt;%
+  drop_na(latitude, year, longitude) %&gt;%
+  mutate(latitude = as.numeric(latitude),
+         longitude = as.numeric(longitude))</code></pre>
+<pre><code>## Warning in left_join(., location_coordinates, by = &quot;location&quot;): Detected an unexpected many-to-many relationship between `x` and `y`.
+## ℹ Row 52 of `x` matches multiple rows in `y`.
+## ℹ Row 95 of `y` matches multiple rows in `x`.
+## ℹ If a many-to-many relationship is expected, set `relationship =
+##   &quot;many-to-many&quot;` to silence this warning.</code></pre>
+<pre><code>## Warning: There were 8 warnings in `mutate()`.
+## The first warning was:
+## ℹ In argument: `latitude = as.numeric(latitude)`.
+## ℹ In group 2: `year = 1872`.
+## Caused by warning:
+## ! NAs introduced by coercion
+## ℹ Run `dplyr::last_dplyr_warnings()` to see the 7 remaining warnings.</code></pre>
+<pre class="r"><code>#write.csv(loc_df, file = &quot;loc_df.csv&quot;, row.names = FALSE)</code></pre>
 <pre class="r"><code>journals_subset_loc %&gt;%
   filter(str_detect(string = location, pattern = &quot;Cra&quot;)) %&gt;%
   distinct(location)</code></pre>

@@ -11,6 +11,8 @@ library(tidyverse)
 #install.packages("readxl")
 library(readxl)
 library("lubridate")
+#install.packages("maps")
+library(maps)
 ```
 
 ```{r import-datasets}
@@ -29,6 +31,7 @@ journal_1883 <- read_excel("Dataset/journal_1883.xlsx")
 journal_1884 <- read_excel("Dataset/journal_1884.xlsx")
 journal_1885 <- read_excel("Dataset/journal_1885.xlsx")
 journal_1886 <- read_excel("Dataset/journal_1886.xlsx")
+location_coordinates <- read_excel("Dataset/location_coordinates.xlsx")
 ```
 
 
@@ -83,6 +86,26 @@ journals_subset_loc_year <- journals_subset %>%
   group_by(year) %>%
   count(location)
 ```
+
+```{r database-longlat}
+location_coordinates <- location_coordinates %>%
+  select(location_list, longitude, latitude) %>%
+  filter(longitude != "NA") %>%
+  rename(location = location_list)
+```
+
+```{r join-data-longlat}
+loc_df <- journals_subset_loc_year %>%
+  left_join(location_coordinates, by = "location") %>%
+  drop_na(latitude, year, longitude) %>%
+  mutate(latitude = as.numeric(latitude),
+         longitude = as.numeric(longitude))
+```
+
+```{r export data}
+#write.csv(loc_df, file = "loc_df.csv", row.names = FALSE)
+```
+
 
 ```{r show-distinct-loc}
 journals_subset_loc %>%
