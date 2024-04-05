@@ -497,31 +497,7 @@
                     });
                 });
             map.on('load', () => {
-                map.addLayer({
-                            "id": "loc-df-ae4nzf",
-                            "minzoom": 0,
-                            "maxzoom": 22,
-                            "type": "circle",
-                            "paint": {
-                                "circle-color": "hsl(331, 81%, 32%)",
-                                "circle-radius": [
-                                    "interpolate",
-                                    [
-                                        "linear"
-                                    ],
-                                    [
-                                        "zoom"
-                                    ],
-                                    0,
-                                    5,
-                                    22,
-                                    5
-                                ]
-                            },
-                            "layout": {},
-                            "source": "composite",
-                            "source-layer": "loc_df-ae4nzf"
-                });
+                //Add bathymetry
                 map.addLayer({
                             "id": "depth",
                             "type": "fill",
