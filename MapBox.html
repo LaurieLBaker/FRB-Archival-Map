@@ -1,0 +1,730 @@
+<!-- This document will be my main document for coding the data -->
+
+<!DOCTYPE html>
+<html>
+
+<!-- Preparation for base map layout input token and ref and what types of interface -->
+<head>
+    <meta charset="utf-8">
+    <title>Create a rotating globe</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<!-- Layout map interface move or no move and the position of text or paragraphs -->
+<body>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 70%;
+        }
+        #features {
+            width: 30%;
+            margin-left: 70%;
+            font-family: sans-serif;
+            overflow-y: scroll;
+            background-color: #fafafa;
+        }
+        section { 
+            padding: 50px;
+            line-height: 25px;
+            border-bottom: 1px solid #ddd;
+            opacity: 0.1;
+            font-size: 13px;
+        }
+        section.active {
+            opacity: 1;
+        }
+        section:last-child {
+            border-bottom: none;
+            margin-bottom: 500px;
+        }
+        
+        .overlay button:hover {
+            background-color: #4ea0da;
+        }
+        #btn-spin {
+            font: bold 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            background-color: #3386c0;
+            color: #fff;
+            position: fixed;
+            top: 20px;
+            left: 35%;
+            z-index: 1;
+            border: none;
+            width: 200px;
+            margin-left: -100px;
+            display: block;
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 30px;
+        }
+        #btn-spin:hover {
+            background-color: #4ea0da;
+        }
+        .overlay {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+    </style>
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+</body>
+
+<body>
+    <div id="map"></div> 
+    <button id="btn-spin">Pause rotation</button>
+    <div id="features">
+        <section id="start" class="active">
+            <h3>The head of the story</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
+                tempor incididunt ut labore et dolore magna aliqua. Pellentesque elit 
+                ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at. 
+                Nunc faucibus a pellentesque sit amet porttitor. Nec feugiat nisl pretium fusce id. 
+                Tincidunt tortor aliquam nulla facilisi cras fermentum. Vivamus at augue 
+                eget arcu dictum varius duis at. Nunc id cursus metus aliquam. 
+                Imperdiet dui accumsan sit amet nulla facilisi morbi tempus iaculis. 
+                Ultrices sagittis orci a scelerisque purus semper eget. 
+                Sit amet dictum sit amet justo. Arcu ac tortor dignissim convallis.
+            </p>
+        </section>
+        <section id="second">
+            <h3>Another story</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
+                tempor incididunt ut labore et dolore magna aliqua. Pellentesque elit 
+                ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at. 
+                Nunc faucibus a pellentesque sit amet porttitor. Nec feugiat nisl pretium fusce id. 
+                Tincidunt tortor aliquam nulla facilisi cras fermentum. Vivamus at augue 
+                eget arcu dictum varius duis at. Nunc id cursus metus aliquam. 
+                Imperdiet dui accumsan sit amet nulla facilisi morbi tempus iaculis. 
+                Ultrices sagittis orci a scelerisque purus semper eget. 
+                Sit amet dictum sit amet justo. Arcu ac tortor dignissim convallis.
+            </p>
+        </section>
+        <section id="third">
+            <h3>The continuity story</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
+                tempor incididunt ut labore et dolore magna aliqua. Pellentesque elit 
+                ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at. 
+                Nunc faucibus a pellentesque sit amet porttitor. Nec feugiat nisl pretium fusce id. 
+                Tincidunt tortor aliquam nulla facilisi cras fermentum. Vivamus at augue 
+                eget arcu dictum varius duis at. Nunc id cursus metus aliquam. 
+                Imperdiet dui accumsan sit amet nulla facilisi morbi tempus iaculis. 
+                Ultrices sagittis orci a scelerisque purus semper eget. 
+                Sit amet dictum sit amet justo. Arcu ac tortor dignissim convallis.
+            </p>
+        </section>
+        <section id="fourth">
+            <h3>What about the scroll</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
+                tempor incididunt ut labore et dolore magna aliqua. Pellentesque elit 
+                ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at. 
+                Nunc faucibus a pellentesque sit amet porttitor. Nec feugiat nisl pretium fusce id. 
+                Tincidunt tortor aliquam nulla facilisi cras fermentum. Vivamus at augue 
+                eget arcu dictum varius duis at. Nunc id cursus metus aliquam. 
+                Imperdiet dui accumsan sit amet nulla facilisi morbi tempus iaculis. 
+                Ultrices sagittis orci a scelerisque purus semper eget. 
+                Sit amet dictum sit amet justo. Arcu ac tortor dignissim convallis.
+            </p>
+        </section>
+        <section id="fifth">
+            <h3>Still continue</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
+                tempor incididunt ut labore et dolore magna aliqua. Pellentesque elit 
+                ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at. 
+                Nunc faucibus a pellentesque sit amet porttitor. Nec feugiat nisl pretium fusce id. 
+                Tincidunt tortor aliquam nulla facilisi cras fermentum. Vivamus at augue 
+                eget arcu dictum varius duis at. Nunc id cursus metus aliquam. 
+                Imperdiet dui accumsan sit amet nulla facilisi morbi tempus iaculis. 
+                Ultrices sagittis orci a scelerisque purus semper eget. 
+                Sit amet dictum sit amet justo. Arcu ac tortor dignissim convallis.
+            </p>
+        </section>
+        <section id="sixth">
+            <h3>I am confused</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
+                tempor incididunt ut labore et dolore magna aliqua. Pellentesque elit 
+                ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at. 
+                Nunc faucibus a pellentesque sit amet porttitor. Nec feugiat nisl pretium fusce id. 
+                Tincidunt tortor aliquam nulla facilisi cras fermentum. Vivamus at augue 
+                eget arcu dictum varius duis at. Nunc id cursus metus aliquam. 
+                Imperdiet dui accumsan sit amet nulla facilisi morbi tempus iaculis. 
+                Ultrices sagittis orci a scelerisque purus semper eget. 
+                Sit amet dictum sit amet justo. Arcu ac tortor dignissim convallis.
+            </p>
+        </section>
+        <section id="seventh">
+            <h3>But I am so happy</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
+                tempor incididunt ut labore et dolore magna aliqua. Pellentesque elit 
+                ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at. 
+                Nunc faucibus a pellentesque sit amet porttitor. Nec feugiat nisl pretium fusce id. 
+                Tincidunt tortor aliquam nulla facilisi cras fermentum. Vivamus at augue 
+                eget arcu dictum varius duis at. Nunc id cursus metus aliquam. 
+                Imperdiet dui accumsan sit amet nulla facilisi morbi tempus iaculis. 
+                Ultrices sagittis orci a scelerisque purus semper eget. 
+                Sit amet dictum sit amet justo. Arcu ac tortor dignissim convallis.
+            </p>
+        </section>
+        <section id="eight">
+            <h3>Coding is Fun</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
+                tempor incididunt ut labore et dolore magna aliqua. Pellentesque elit 
+                ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at. 
+                Nunc faucibus a pellentesque sit amet porttitor. Nec feugiat nisl pretium fusce id. 
+                Tincidunt tortor aliquam nulla facilisi cras fermentum. Vivamus at augue 
+                eget arcu dictum varius duis at. Nunc id cursus metus aliquam. 
+                Imperdiet dui accumsan sit amet nulla facilisi morbi tempus iaculis. 
+                Ultrices sagittis orci a scelerisque purus semper eget. 
+                Sit amet dictum sit amet justo. Arcu ac tortor dignissim convallis.
+            </p>
+        </section>
+    </div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiaXNhbnRvc28yNCIsImEiOiJjbHJoMnpqa28wM3g2MmptZjNhY2I0azZ4In0.hf_HgbByCza1aIBdbbbaOw';
+        const map = new mapboxgl.Map({
+            container: 'map', // where do you want to put the map, like go find the div in id that has a map
+            style: 'https://api.mapbox.com/styles/v1/isantoso24/cluil7e69000e01pbcqio3bnz.html?title=view&access_token=pk.eyJ1IjoiaXNhbnRvc28yNCIsImEiOiJjbHJoMnpqa28wM3g2MmptZjNhY2I0azZ4In0.hf_HgbByCza1aIBdbbbaOw&zoomwheel=true&fresh=true#1.56/12.3/-36.6',
+            projection: 'globe', // Display the map as a globe, since satellite-v9 defaults to Mercator
+            zoom: 1.5,
+            center: [-68.164458, 44.411313] // Lng, lat
+        });
+
+        // point 1
+        const origin = [-68.182394,44.329264];
+
+        // point 2
+        const destination = [-68.188454,44.320488];
+
+        // A simple line from origin to destination.
+        const route = {
+            'type': 'FeatureCollection',
+            'features': [
+                {
+                    'type': 'Feature',
+                    'geometry': {
+                        'type': 'LineString',
+                        'coordinates': [origin, destination]
+                    }
+                }
+            ]
+        };
+
+        // A single point that animates along the route.
+        // Coordinates are initially set to origin.
+        const point = {
+            'type': 'FeatureCollection',
+            'features': [
+                {
+                    'type': 'Feature',
+                    'properties': {},
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': origin
+                    }
+                }
+            ]
+        };
+
+        // Calculate the distance in kilometers between route start/end point.
+        const lineDistance = turf.length(route.features[0]);
+
+        const arc = [];
+
+        // Number of steps to use in the arc and animation, more steps means
+        // a smoother arc and animation, but too many steps will result in a
+        // low frame rate
+        const steps = 500;
+
+        // Draw an arc between the `origin` & `destination` of the two points
+        for (let i = 0; i < lineDistance; i += lineDistance / steps) {
+            const segment = turf.along(route.features[0], i);
+            arc.push(segment.geometry.coordinates);
+        }
+
+        // Update the route with calculated arc coordinates
+        route.features[0].geometry.coordinates = arc;
+
+        // Used to increment the value of the point measurement against the route.
+        let counter = 0;
+
+        const size = 200;
+ 
+        // This implements `StyleImageInterface`
+        // to draw a pulsing dot icon on the map.
+        const pulsingDot = {
+            width: size,
+            height: size,
+            data: new Uint8Array(size * size * 4),
+
+            // When the layer is added to the map,
+            // get the rendering context for the map canvas.
+            onAdd: function () {
+                const canvas = document.createElement('canvas');
+                canvas.width = this.width;
+                canvas.height = this.height;
+                this.context = canvas.getContext('2d');
+            },
+
+            // Call once before every frame where the icon will be used.
+            render: function () {
+                const duration = 1000;
+                const t = (performance.now() % duration) / duration;
+
+                const radius = (size / 2) * 0.3;
+                const outerRadius = (size / 2) * 0.7 * t + radius;
+                const context = this.context;
+
+                // Draw the outer circle.
+                context.clearRect(0, 0, this.width, this.height);
+                context.beginPath();
+                context.arc(
+                    this.width / 2,
+                    this.height / 2,
+                    outerRadius,
+                    0,
+                    Math.PI * 2
+                );
+                context.fillStyle = `rgba(255, 200, 200, ${1 - t})`;
+                context.fill();
+
+                // Draw the inner circle.
+                context.beginPath();
+                context.arc(
+                    this.width / 2,
+                    this.height / 2,
+                    radius,
+                    0,
+                    Math.PI * 2
+                );
+                context.fillStyle = 'rgba(255, 100, 100, 1)';
+                context.strokeStyle = 'white';
+                context.lineWidth = 2 + 4 * (1 - t);
+                context.fill();
+                context.stroke();
+
+                // Update this image's data with data from the canvas.
+                this.data = context.getImageData(
+                    0,
+                    0,
+                    this.width,
+                    this.height
+                ).data;
+
+                // Continuously repaint the map, resulting
+                // in the smooth animation of the dot.
+                map.triggerRepaint();
+
+                // Return `true` to let the map know that the image was updated.
+                return true;
+            }
+        };
+
+        const chapters = {
+                'start': {
+                    center: [-68.164458, 44.411313],
+                    zoom: 1.5,
+                    pitch: 5
+                },
+                'second': {
+                    duration: 6000,
+                    center: [-68.221639, 44.396160],
+                    bearing: 0, // its the direction of the 0 to 365 degree
+                    zoom: 15,
+                    pitch: 60 // the 3D ness of map looks
+                },
+                'third': {
+                    bearing: 90,
+                    center: [-68.182394,44.329264],
+                    zoom: 13,
+                    speed: 0.6,
+                    pitch: 40
+                },
+                'fourth': {
+                    bearing: 90,
+                    center: [-68.210599,44.388361],
+                    zoom: 12.3
+                },
+                'fifth': {
+                    bearing: 45,
+                    center: [-68.193591,44.376660],
+                    zoom: 15.3,
+                    pitch: 20,
+                    speed: 0.5
+                },
+                'sixth': {
+                    bearing: 180,
+                    center: [-68.399086,44.284721],
+                    zoom: 12.3
+                },
+                'seventh': {
+                    bearing: 90,
+                    center: [-68.332594,44.362517],
+                    zoom: 17.3,
+                    pitch: 40
+                },
+                'eight': {
+                    bearing: 90,
+                    center: [-68.366418,44.427352],
+                    zoom: 14.3,
+                    pitch: 20
+                }
+            };
+
+            let activeChapterName = 'start';
+            function setActiveChapter(chapterName) {
+                if (chapterName === activeChapterName) return;
+
+                map.flyTo(chapters[chapterName]);
+
+                document.getElementById(chapterName).classList.add('active');
+                document.getElementById(activeChapterName).classList.remove('active');
+
+                activeChapterName = chapterName;
+            }
+
+            function isElementOnScreen(id) {
+                const element = document.getElementById(id);
+                const bounds = element.getBoundingClientRect();
+                return bounds.top < window.innerHeight && bounds.bottom > 0;
+            }
+
+            // On every scroll event, check which element is on screen
+            window.onscroll = () => {
+                for (const chapterName in chapters) {
+                    if (isElementOnScreen(chapterName)) {
+                        setActiveChapter(chapterName);
+                        break;
+                    }
+                }
+            };
+
+        map.on('load', () => {
+                map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
+
+                map.addSource('dot-point', {
+                    'type': 'geojson',
+                    'data': {
+                        'type': 'FeatureCollection',
+                        'features': [
+                            {
+                                'type': 'Feature',
+                                'geometry': {
+                                    'type': 'Point',
+                                    'coordinates': [-68.221639, 44.396160] // icon position [lng, lat]
+                                }
+                            }
+                        ]
+                    }
+                });
+                map.addLayer({
+                    'id': 'layer-with-pulsing-dot',
+                    'type': 'symbol',
+                    'source': 'dot-point',
+                    'layout': {
+                        'icon-image': 'pulsing-dot'
+                    }
+                });
+            });
+            map.on('load', () => {
+                    map.addSource('places', {
+                        'type': 'geojson',
+                        'data': {
+                            'type': 'FeatureCollection',
+                            'features': [
+                                {
+                                    'type': 'Feature',
+                                    'properties': {
+                                        'description':
+                                            '<strong>Where I see The Tay</strong><p>I bike there with my friend to see the legendary ship wreck the Tay on Sunday the 14th of january 2024</p>'
+                                    },
+                                    'geometry': {
+                                        'type': 'Point',
+                                        'coordinates': [-68.182394,44.329264]
+                                    }
+                                },
+                                {
+                                    'type': 'Feature',
+                                    'properties': {
+                                        'description':
+                                            '<strong>The Damage</strong><p>We then went to see the damage of the storm accross the ocean path</p>'
+                                    },
+                                    'geometry': {
+                                        'type': 'Point',
+                                        'coordinates': [-68.188454,44.320488]
+                                    }
+                                },
+                                {
+                                    'type': 'Feature',
+                                    'properties': {
+                                        'description':
+                                            '<strong>Hannaford Haul</strong><p>Then we got some food because we are so hungry</p>'
+                                    },
+                                    'geometry': {
+                                        'type': 'Point',
+                                        'coordinates': [-68.210599,44.388361]
+                                    }
+                                }
+                            ]
+                        }
+                    });
+                // Add a layer showing the places.
+                map.addLayer({
+                    'id': 'places',
+                    'type': 'circle',
+                    'source': 'places',
+                    'paint': {
+                        'circle-color': '#4264fb',
+                        'circle-radius': 6,
+                        'circle-stroke-width': 2,
+                        'circle-stroke-color': '#ffffff'
+                    }
+                });
+
+                // Create a popup, but don't add it to the map yet.
+                const popup = new mapboxgl.Popup({
+                    closeButton: false,
+                    closeOnClick: false
+                });
+
+                map.on('mouseenter', 'places', (e) => {
+                    // Change the cursor style as a UI indicator.
+                    map.getCanvas().style.cursor = 'pointer';
+
+                    // Copy coordinates array.
+                    const coordinates = e.features[0].geometry.coordinates.slice();
+                    const description = e.features[0].properties.description;
+
+                    // Ensure that if the map is zoomed out such that multiple
+                    // copies of the feature are visible, the popup appears
+                    // over the copy being pointed to.
+                    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                    }
+
+                    // Populate the popup and set its coordinates
+                    // based on the feature found.
+                    popup.setLngLat(coordinates).setHTML(description).addTo(map);
+                });
+
+                map.on('mouseleave', 'places', () => {
+                    map.getCanvas().style.cursor = '';
+                    popup.remove();
+                });
+            });
+
+        map.on('style.load', () => {
+            map.setFog({}); // Set the default atmosphere style
+        });
+
+        map.on('load', () => {
+            // Add a source and layer displaying a point which will be animated in a circle.
+            map.addSource('route', {
+                'type': 'geojson',
+                'data': route
+            });
+
+            map.addSource('point', {
+                'type': 'geojson',
+                'data': point
+            });
+
+            map.addLayer({
+                'id': 'route',
+                'source': 'route',
+                'type': 'line',
+                'paint': {
+                    'line-width': 2,
+                    'line-color': '#007cbf'
+                }
+            });
+
+            map.addLayer({
+                'id': 'point',
+                'source': 'point',
+                'type': 'symbol',
+                'layout': {
+                        // This icon is a part of the Mapbox Streets style.
+                        // To view all images available in a Mapbox style, open
+                        // the style in Mapbox Studio and click the "Images" tab.
+                        // To add a new image to the style at runtime see
+                        // https://docs.mapbox.com/mapbox-gl-js/example/add-image/
+                        'icon-image': 'airport',
+                        'icon-size': 1.5,
+                        'icon-rotate': ['get', 'bearing'],
+                        'icon-rotation-alignment': 'map',
+                        'icon-allow-overlap': true,
+                        'icon-ignore-placement': true
+                }
+            });
+            let running = false;
+            function animate() {
+                running = true;
+                document.getElementById('replay').disabled = true;
+                const start =
+                    route.features[0].geometry.coordinates[
+                    counter >= steps ? counter - 1 : counter
+                    ];
+                const end =
+                    route.features[0].geometry.coordinates[
+                    counter >= steps ? counter : counter + 1
+                    ];
+                if (!start || !end) {
+                    running = false;
+                    document.getElementById('replay').disabled = false;
+                    return;
+                }
+                // Update point geometry to a new position based on counter denoting
+                // the index to access the arc
+                point.features[0].geometry.coordinates =
+                    route.features[0].geometry.coordinates[counter];
+
+                // Calculate the bearing to ensure the icon is rotated to match the route arc
+                // The bearing is calculated between the current point and the next point, except
+                // at the end of the arc, which uses the previous point and the current point
+                point.features[0].properties.bearing = turf.bearing(
+                    turf.point(start),
+                    turf.point(end)
+                );
+
+                // Update the source with this new data
+                map.getSource('point').setData(point);
+
+                // Request the next frame of animation as long as the end has not been reached
+                if (counter < steps) {
+                    requestAnimationFrame(animate);
+                }
+
+                counter = counter + 1;
+            }
+
+            document.getElementById('replay').addEventListener('click', () => {
+                if (running) {
+                    void 0;
+                } else {
+                    // Set the coordinates of the original point back to origin
+                    point.features[0].geometry.coordinates = origin;
+
+                    // Update the source layer
+                    map.getSource('point').setData(point);
+
+                    // Reset the counter
+                    counter = 0;
+
+                    // Restart the animation
+                    animate(counter);
+                }
+            });
+
+            // Start the animation
+            animate(counter);
+        });
+
+        // The following values can be changed to control rotation speed:
+
+        // At low zooms, complete a revolution every two minutes.
+        const secondsPerRevolution = 80;
+        // Above zoom level 5, do not rotate.
+        const maxSpinZoom = 5;
+        // Rotate at intermediate speeds between zoom levels 3 and 5.
+        const slowSpinZoom = 3;
+
+        let userInteracting = false;
+        let spinEnabled = true;
+
+        function spinGlobe() {
+            const zoom = map.getZoom();
+            if (spinEnabled && !userInteracting && zoom < maxSpinZoom) {
+                let distancePerSecond = 360 / secondsPerRevolution;
+                if (zoom > slowSpinZoom) {
+                    // Slow spinning at higher zooms
+                    const zoomDif =
+                        (maxSpinZoom - zoom) / (maxSpinZoom - slowSpinZoom);
+                    distancePerSecond *= zoomDif;
+                }
+                const center = map.getCenter();
+                center.lng -= distancePerSecond;
+                // Smoothly animate the map over one second.
+                // When this animation is complete, it calls a 'moveend' event.
+                map.easeTo({ center, duration: 1000, easing: (n) => n });
+            }
+        }
+
+        // Pause spinning on interaction
+        map.on('mousedown', () => {
+            userInteracting = true;
+        });
+
+        // Restart spinning the globe when interaction is complete
+        map.on('mouseup', () => {
+            userInteracting = false;
+            spinGlobe();
+        });
+
+        // These events account for cases where the mouse has moved
+        // off the map, so 'mouseup' will not be fired.
+        map.on('dragend', () => {
+            userInteracting = false;
+            spinGlobe();
+        });
+        map.on('pitchend', () => {
+            userInteracting = false;
+            spinGlobe();
+        });
+        map.on('rotateend', () => {
+            userInteracting = false;
+            spinGlobe();
+        });
+
+        // When animation is complete, start spinning if there is no ongoing interaction
+        map.on('moveend', () => {
+            spinGlobe();
+        });
+
+        document.getElementById('btn-spin').addEventListener('click', (e) => {
+            spinEnabled = !spinEnabled;
+            if (spinEnabled) {
+                spinGlobe();
+                e.target.innerHTML = 'Pause rotation';
+            } else {
+                map.stop(); // Immediately end ongoing animation
+                e.target.innerHTML = 'Start rotation';
+            }
+        });
+
+        spinGlobe();
+        // Add zoom and rotation controls to the map.
+        map.addControl(new mapboxgl.NavigationControl());
+        map.addControl(new mapboxgl.FullscreenControl());
+    </script>
+
+</body>
+
+</html>
