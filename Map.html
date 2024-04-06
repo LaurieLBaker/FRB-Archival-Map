@@ -49,6 +49,11 @@
             background-color: #4ea0da;
         }
     </style>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet"
+    href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+
+
     <div id="map"></div>
     <button id="btn-spin">Pause rotation</button>
     <script>
@@ -63,21 +68,6 @@
 
         map.on('style.load', () => {
             map.setFog({}); // Set the default atmosphere style
-            map.addSource('loc-df', { //set the geojson
-                type : 'geojson',
-                data : 'Geojson data/loc_df.geojson' //path for the json make sure to check the console (cmd + opt +J)
-            });
-            map.addLayer({
-                "id": "loc-df-circle",
-                "minzoom": 0,
-                "maxzoom": 22,
-                "type": "circle",
-                "paint": {
-                    "circle-color": "hsl(24, 69%, 31%)"
-                },
-                "layout": {},
-                "source": "loc-df",
-            })
             map.addLayer({ //set the bathymetry style
                 "id": "depth",
                 "type": "fill",
@@ -112,7 +102,23 @@
                 "source-layer": "depth"
             })
         });
-
+        map.on('click', function(event){
+            map.addSource('loc-df', { //set the geojson
+                type : 'geojson',
+                data : 'Geojson data/loc_df.geojson' //path for the json make sure to check the console (cmd + opt +J)
+            });
+            map.addLayer({ //this is the way to add geojson layer to show up
+                "id": "loc-df-circle",
+                "minzoom": 0,
+                "maxzoom": 22,
+                "type": "circle",
+                "paint": {
+                    "circle-color": "hsl(24, 69%, 31%)"
+                },
+                "layout": {},
+                "source": "loc-df",
+            });
+        });
             // The following values can be changed to control rotation speed:
 
             // At low zooms, complete a revolution every two minutes.
@@ -186,6 +192,15 @@
             });
 
             spinGlobe();
+             // Add zoom and rotation controls to the map.
+            map.addControl(
+                    new MapboxGeocoder({
+                        accessToken: mapboxgl.accessToken,
+                        mapboxgl: mapboxgl
+                    })
+    );
+            map.addControl(new mapboxgl.NavigationControl());
+            map.addControl(new mapboxgl.FullscreenControl());
     </script>
 </body>
 </html>
