@@ -63,7 +63,11 @@
 
         map.on('style.load', () => {
             map.setFog({}); // Set the default atmosphere style
-            map.addLayer({
+            map.addSource('loc-df', { //set the geojson
+                type : 'geojson',
+                data : '/workspaces/Archival-Map/Geojson data/loc_df.geojson' //path for the json make sure to check the console (cmd + opt +J)
+            });
+            map.addLayer({ //set the bathymetry style
                 "id": "depth",
                 "type": "fill",
                 "paint": {
@@ -95,8 +99,8 @@
                 "layout": {},
                 "source": "composite",
                 "source-layer": "depth"
-                })
-            });
+            })
+        });
 
             // The following values can be changed to control rotation speed:
 
@@ -172,7 +176,5 @@
 
             spinGlobe();
     </script>
-
 </body>
-
 </html>
