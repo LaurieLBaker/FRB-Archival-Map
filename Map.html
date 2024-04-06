@@ -65,8 +65,19 @@
             map.setFog({}); // Set the default atmosphere style
             map.addSource('loc-df', { //set the geojson
                 type : 'geojson',
-                data : '/workspaces/Archival-Map/Geojson data/loc_df.geojson' //path for the json make sure to check the console (cmd + opt +J)
+                data : 'Geojson data/loc_df.geojson' //path for the json make sure to check the console (cmd + opt +J)
             });
+            map.addLayer({
+                "id": "loc-df-circle",
+                "minzoom": 0,
+                "maxzoom": 22,
+                "type": "circle",
+                "paint": {
+                    "circle-color": "hsl(24, 69%, 31%)"
+                },
+                "layout": {},
+                "source": "loc-df",
+            })
             map.addLayer({ //set the bathymetry style
                 "id": "depth",
                 "type": "fill",
