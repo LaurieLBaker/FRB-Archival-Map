@@ -11,6 +11,10 @@ library(tidyverse)
 #install.packages("readxl")
 library(readxl)
 library("lubridate")
+#install.packages("stringr")
+library("stringr")
+#install.packages("dplyr")
+library("dplyr")
 #install.packages("maps")
 library(maps)
 ```
@@ -87,7 +91,7 @@ journals_subset_loc_year <- journals_subset %>%
   count(location)
 ```
 
-```{r}
+```{r loc-winter-hb}
 journals_subset %>%
   filter(location == "Winter Harbor")
 ```
@@ -133,6 +137,27 @@ journals_subset_thermo %>%
   geom_point()
 ```
 
+```{r entry-year-loc}
+loc_df_entry <- journals_subset %>%
+  left_join(location_coordinates, by = "location") %>%
+  drop_na(latitude, year, longitude) %>%
+  mutate(latitude = as.numeric(latitude),
+         longitude = as.numeric(longitude)) %>%
+  na.omit()
+```
+
+words to think about why freeland is at the exact location:
+- Anchored | anchored
+- Discharged | discharged
+- wharf
+- arriving
+
+```{r desc-entry}
+loc_mention <- loc_df_entry %>%
+  filter(str_detect(string = journal_entry, pattern = "Anchored|anchored|discharge|discharged|went|wood|wharf|arriving|arrived"), ignore.case = TRUE)
+```
+
+
 
 ```{r mutate-name-loc}
 #journals_subset_loc <- journals_subset_loc %>%
@@ -147,4 +172,3 @@ journals_subset_thermo %>%
   #group_by(location) %>%
   #summarize(sum(n))
 ```
-
