@@ -83,8 +83,13 @@ journals_subset_loc <- journals_subset  %>%
 ```{r group-by-year}
 journals_subset_loc_year <- journals_subset %>%
   mutate(year = case_when(year %in% 181 ~ 1881, TRUE ~ year)) %>%
-  group_by(year) %>%
+  group_by(year, month) %>%
   count(location)
+```
+
+```{r}
+journals_subset %>%
+  filter(location == "Winter Harbor")
 ```
 
 ```{r database-longlat}
@@ -112,6 +117,22 @@ journals_subset_loc %>%
   filter(str_detect(string = location, pattern = "Cra")) %>%
   distinct(location)
 ```
+
+```{r create-thermometer}
+journals_subset_thermo <- journals_subset %>%
+  filter(str_detect(string = journal_entry, pattern = "Thermometer | thermometer")) %>% # filter rows for mentions of word thermometer
+  mutate(temp = as.numeric(str_extract(journal_entry, pattern = '(?<=thermometer |Thermometer )\\d+'))) %>% # extract digits following the word thermometer in a sentence.
+  na.omit()
+```
+
+```{r ggplot-thermo}
+journals_subset_thermo %>%
+  filter(location == "Winter Harbor") %>%
+  filter(year == c("1879", "1880", "1881", "1882")) %>%
+  ggplot(aes(x = date_mdy, y = as.numeric(temp))) +
+  geom_point()
+```
+
 
 ```{r mutate-name-loc}
 #journals_subset_loc <- journals_subset_loc %>%
