@@ -47,7 +47,7 @@ map.on('style.load', () => {
 map.on('click', function(event){
     map.addSource('loc-df', { //set the geojson
         type : 'geojson',
-        data : 'Geojson-data/loc_df.geojson' //path for the json make sure to check the console (cmd + opt +J)
+        data : 'Geojson-data/loc_mention.geojson' //path for the json make sure to check the console (cmd + opt +J)
     });
     map.addLayer({ //this is the way to add geojson layer to show up
         "id": "loc-df",
