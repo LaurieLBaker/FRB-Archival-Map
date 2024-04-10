@@ -47,7 +47,7 @@ map.on('style.load', () => {
 map.on('click', function(event){
     map.addSource('loc-df', { //set the geojson
         type : 'geojson',
-        data : 'Geojson data/loc_df.geojson' //path for the json make sure to check the console (cmd + opt +J)
+        data : 'Geojson-data/loc_df.geojson' //path for the json make sure to check the console (cmd + opt +J)
     });
     map.addLayer({ //this is the way to add geojson layer to show up
         "id": "loc-df",
@@ -140,29 +140,6 @@ map.on('click', function(event){
                 accessToken: mapboxgl.accessToken,
                 mapboxgl: mapboxgl
             })
-);
-    map.on('click', () => { //i dont know why its not working
-        // Fetch GeoJSON data from the source
-        var pointsData = map.getSource('loc-df')._data;
-
-        // Generate LineString from points using Turf.js
-        var lineString = turf.lineString(pointsData.features.map(feature => feature.geometry.coordinates));
-
-        // Add LineString to the map
-        map.addSource('line', {
-            type: 'geojson',
-            data: lineString
-        });
-
-        map.addLayer({
-            id: 'line',
-            type: 'line',
-            source: 'line',
-            paint: {
-                'line-color': '#0000FF',
-                'line-width': 2
-            }
-        });
-    });
+    );
     map.addControl(new mapboxgl.NavigationControl());
     map.addControl(new mapboxgl.FullscreenControl());
