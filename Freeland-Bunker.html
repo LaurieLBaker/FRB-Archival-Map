@@ -487,7 +487,8 @@ journals &lt;- dplyr::bind_rows(journal_1871_1872, journal_1873, journal_1874,
 ## Caused by warning:
 ## ! NAs introduced by coercion
 ## ℹ Run `dplyr::last_dplyr_warnings()` to see the 13 remaining warnings.</code></pre>
-<pre class="r"><code>#write.csv(loc_df, file = &quot;loc_df.csv&quot;, row.names = FALSE)</code></pre>
+<pre class="r"><code>#write.csv(loc_df, file = &quot;loc_df.csv&quot;, row.names = FALSE)
+#write.csv(loc_mention, file = &quot;loc_mention.csv&quot;, row.names = FALSE)</code></pre>
 <pre class="r"><code>journals_subset_loc %&gt;%
   filter(str_detect(string = location, pattern = &quot;Cra&quot;)) %&gt;%
   distinct(location)</code></pre>

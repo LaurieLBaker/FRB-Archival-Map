@@ -113,6 +113,7 @@ loc_df <- journals_subset_loc_year %>%
 
 ```{r export data}
 #write.csv(loc_df, file = "loc_df.csv", row.names = FALSE)
+write.csv(loc_mention, file = "loc_mention.csv", row.names = FALSE)
 ```
 
 
