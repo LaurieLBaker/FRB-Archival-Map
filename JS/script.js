@@ -44,10 +44,11 @@ map.on('style.load', () => {
         "source-layer": "depth"
     })
 });
-map.on('click', function(event){
+
+map.on('load', function() {
     map.addSource('loc-df', { //set the geojson
-        type : 'geojson',
-        data : 'Geojson-data/loc_df.geojson' //path for the json make sure to check the console (cmd + opt +J)
+        type: 'geojson',
+        data: 'Geojson-data/loc_mention.geojson' //path for the json make sure to check the console (cmd + opt +J)
     });
     map.addLayer({ //this is the way to add geojson layer to show up
         "id": "loc-df",
@@ -60,7 +61,35 @@ map.on('click', function(event){
         "layout": {},
         "source": "loc-df",
     });
+
+    // Get GeoJSON data
+    var geojsonData = map.getSource('loc-df')._data;
+    // Animate movement of points
+    var currentIndex = 0;
+    var speedFactor = 10; // Adjust the speed factor as needed
+
+    function animatePoints() {
+        if (currentIndex < geojsonData.features.length - 1) {
+            var currentFeature = geojsonData.features[currentIndex];
+            var nextFeature = geojsonData.features[currentIndex + 1];
+
+            // Update point position on the map
+            // Use Mapbox GL JS API to move the point from current to next position
+
+            // Adjust timing based on timestamps
+            var timeDiff = new Date(nextFeature.properties.date_mdy) - new Date(currentFeature.properties.date_mdy);
+            setTimeout(animatePoints, timeDiff / speedFactor); // Adjust animation speed
+
+            currentIndex++;
+        }
+    };
+
+    // Start animation
+    animatePoints();
 });
+
+// Remaining code for spinning globe and other controls...
+
     // The following values can be changed to control rotation speed:
 
     // At low zooms, complete a revolution every two minutes.
