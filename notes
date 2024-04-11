@@ -1,11 +1,11 @@
-        map.addLayer({ //this is the way to add geojson layer to show up
-            "id": "loc-df",
-            "minzoom": 0,
-            "maxzoom": 22,
-            "type": "circle",
-            "paint": {
-                "circle-color": "hsl(24, 69%, 31%)"
-            },
-            "layout": {},
-            "source": "loc-df",
-        });
+notes for the next:
+- try to embed the streamline story for the maps with icons to show what is significant about this journey
+- create an r markdown analysis app for the data processing
+
+Skipping stone:
+- animate the points
+- scrolling story
+- what kind of interactivity
+
+questions:
+- who are the audience? really
