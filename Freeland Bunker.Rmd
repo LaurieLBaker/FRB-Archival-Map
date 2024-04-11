@@ -17,6 +17,8 @@ library("stringr")
 library("dplyr")
 #install.packages("maps")
 library(maps)
+#install.packages("leaflet")
+library("leaflet")
 ```
 
 ```{r import-datasets}
@@ -113,7 +115,8 @@ loc_df <- journals_subset_loc_year %>%
 
 ```{r export data}
 #write.csv(loc_df, file = "loc_df.csv", row.names = FALSE)
-write.csv(loc_mention, file = "loc_mention.csv", row.names = FALSE)
+#write.csv(loc_mention, file = "loc_mention.csv", row.names = FALSE)
+write.csv(journals_test, file = "journals_test", row.names = FALSE)
 ```
 
 
@@ -158,6 +161,20 @@ loc_mention <- loc_df_entry %>%
   filter(str_detect(string = journal_entry, pattern = "Anchored|anchored|discharge|discharged|went|wood|wharf|arriving|arrived"), ignore.case = TRUE)
 ```
 
+```{r check-leaflet}
+leaflet(data = loc_mention) %>%
+     setView(lng = -66, lat = 43.5, zoom = 9) %>%
+     addProviderTiles(providers$OpenStreetMap) %>%
+     addCircleMarkers(lng = ~longitude, 
+                      lat = ~latitude, 
+                      label = ~location, 
+                      radius = 1)
+```
+
+```{r test-data}
+journals_test <- loc_df %>%
+  filter(year == "1883", month == "7")
+```
 
 
 ```{r mutate-name-loc}
