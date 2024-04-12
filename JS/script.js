@@ -97,6 +97,30 @@ fetch('Geojson-data/journals_test.geojson')
     console.error('Error loading GeoJSON:', error);
 });
 
+//Adding the point data
+map.on('load', function() {
+    map.addSource('points', { //set the geojson
+        type: 'geojson',
+        data: 'Geojson-data/journals_test.geojson' //path for the json make sure to check the console (cmd + opt +J)
+    });
+    map.addLayer({ //this is the way to add geojson layer to show up
+        'id': 'points',
+        'source': 'points',
+        'type': 'symbol',
+        'layout': {
+            // This icon is a part of the Mapbox Streets style.
+            // To view all images available in a Mapbox style, open
+            // the style in Mapbox Studio and click the "Images" tab.
+            // To add a new image to the style at runtime see
+            // https://docs.mapbox.com/mapbox-gl-js/example/add-image/
+            'icon-image': 'ferry',
+            'icon-size': 1.5,
+            'icon-allow-overlap': true,
+            'icon-ignore-placement': true
+        }
+    });
+})
+
 // Remaining code for spinning globe and other controls
 // The following values can be changed to control rotation speed:
 // At low zooms, complete a revolution every two minutes.
@@ -177,101 +201,6 @@ map.addControl(
         mapboxgl: mapboxgl
     })
 );
-
-//work on this more
-
-// Calculate the distance in kilometers between route start/end point.
-const lineDistance = turf.length(route.features[0]);
-// Number of steps to use in animation, more steps means a smoother arc and animation, but too many steps will result in a low frame rate
-const steps = 500;
-// Used to increment the value of the point measurement against the route.
-let counter = 0;
-
-//Adding the point data
-map.on('load', function() {
-    map.addSource('points', { //set the geojson
-        type: 'geojson',
-        data: 'Geojson-data/journals_test.geojson' //path for the json make sure to check the console (cmd + opt +J)
-    });
-    map.addLayer({ //this is the way to add geojson layer to show up
-        'id': 'points',
-        'source': 'points',
-        'type': 'symbol',
-        'layout': {
-            // This icon is a part of the Mapbox Streets style.
-            // To view all images available in a Mapbox style, open
-            // the style in Mapbox Studio and click the "Images" tab.
-            // To add a new image to the style at runtime see
-            // https://docs.mapbox.com/mapbox-gl-js/example/add-image/
-            'icon-image': 'airport',
-            'icon-size': 1.5,
-            'icon-allow-overlap': true,
-            'icon-ignore-placement': true
-        }
-    });
-    let running = false;
-    function animate() {
-        running = true;
-        document.getElementById('replay').disabled = true;
-        const start =
-            newGeoJSON.features[0].geometry.coordinates[
-            counter >= steps ? counter - 1 : counter
-            ];
-        const end =
-            newGeoJSON.features[0].geometry.coordinates[
-            counter >= steps ? counter : counter + 1
-            ];
-        if (!start || !end) {
-            running = false;
-            document.getElementById('replay').disabled = false;
-            return;
-        }
-        // Update point geometry to a new position based on counter denoting
-        // the index to access the arc
-        point.features[0].geometry.coordinates =
-            newGeoJSON.features[0].geometry.coordinates[counter];
-
-        // Calculate the bearing to ensure the icon is rotated to match the route arc
-        // The bearing is calculated between the current point and the next point, except
-        // at the end of the arc, which uses the previous point and the current point
-        point.features[0].properties.bearing = turf.bearing(
-            turf.point(start),
-            turf.point(end)
-        );
-
-        // Update the source with this new data
-        map.getSource('point').setData(point);
-
-        // Request the next frame of animation as long as the end has not been reached
-        if (counter < steps) {
-            requestAnimationFrame(animate);
-        }
-
-        counter = counter + 1;
-    }
-
-    document.getElementById('replay').addEventListener('click', () => {
-        if (running) {
-            void 0;
-        } else {
-            // Set the coordinates of the original point back to origin
-            point.features[0].geometry.coordinates = origin;
-
-            // Update the source layer
-            map.getSource('point').setData(point);
-
-            // Reset the counter
-            counter = 0;
-
-            // Restart the animation
-            animate(counter);
-        }
-    });
-
-    // Start the animation
-    animate(counter);
-});
-
 //Add map search
 map.addControl(new mapboxgl.NavigationControl());
 //Add map fullscreen
