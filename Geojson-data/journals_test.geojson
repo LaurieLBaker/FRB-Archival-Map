@@ -1,1 +1,171 @@
-{"type":"FeatureCollection","crs":{"type":"name","properties":{"name":"EPSG:4326"}},"features":[{"type":"Feature","id":1,"geometry":{"type":"Point","coordinates":[-70.47166478,43.11916619]},"properties":{"year":1883,"month":7,"location":"Boon Island","n":1,"longitude":-70.47166478,"latitude":43.11916619,"ObjectId":1}},{"type":"Feature","id":2,"geometry":{"type":"Point","coordinates":[-68.138067,44.354544]},"properties":{"year":1883,"month":7,"location":"Egg Rock","n":1,"longitude":-68.138067,"latitude":44.354544,"ObjectId":2}},{"type":"Feature","id":3,"geometry":{"type":"Point","coordinates":[-72.65319,41.21088]},"properties":{"year":1883,"month":7,"location":"Falkner Island","n":1,"longitude":-72.65319,"latitude":41.21088,"ObjectId":3}},{"type":"Feature","id":4,"geometry":{"type":"Point","coordinates":[-68.225999096,44.585497658]},"properties":{"year":1883,"month":7,"location":"Franklin","n":1,"longitude":-68.225999096,"latitude":44.585497658,"ObjectId":4}},{"type":"Feature","id":5,"geometry":{"type":"Point","coordinates":[-68.855033,43.783473]},"properties":{"year":1883,"month":7,"location":"Matinicus Rock","n":2,"longitude":-68.855033,"latitude":43.783473,"ObjectId":5}},{"type":"Feature","id":6,"geometry":{"type":"Point","coordinates":[-71.48139,41.3615]},"properties":{"year":1883,"month":7,"location":"Point Judith","n":2,"longitude":-71.48139,"latitude":41.3615,"ObjectId":6}},{"type":"Feature","id":7,"geometry":{"type":"Point","coordinates":[-70.762245,43.071568]},"properties":{"year":1883,"month":7,"location":"Portsmouth","n":3,"longitude":-70.762245,"latitude":43.071568,"ObjectId":7}},{"type":"Feature","id":8,"geometry":{"type":"Point","coordinates":[-68.09811741,44.39116851]},"properties":{"year":1883,"month":7,"location":"Winter Harbor","n":2,"longitude":-68.09811741,"latitude":44.39116851,"ObjectId":8}}]}
+{
+    "type": "FeatureCollection",
+    "crs": {
+        "type": "name",
+        "properties": {
+            "name": "EPSG:4326"
+        }
+    },
+    "features": [
+        {
+            "type": "Feature",
+            "id": 1,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -70.47166478,
+                    43.11916619
+                ]
+            },
+            "properties": {
+                "year": 1883,
+                "month": 7,
+                "location": "Boon Island",
+                "n": 1,
+                "longitude": -70.47166478,
+                "latitude": 43.11916619,
+                "ObjectId": 1
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 2,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -68.138067,
+                    44.354544
+                ]
+            },
+            "properties": {
+                "year": 1883,
+                "month": 7,
+                "location": "Egg Rock",
+                "n": 1,
+                "longitude": -68.138067,
+                "latitude": 44.354544,
+                "ObjectId": 2
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 3,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -72.65319,
+                    41.21088
+                ]
+            },
+            "properties": {
+                "year": 1883,
+                "month": 7,
+                "location": "Falkner Island",
+                "n": 1,
+                "longitude": -72.65319,
+                "latitude": 41.21088,
+                "ObjectId": 3
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 4,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -68.225999096,
+                    44.585497658
+                ]
+            },
+            "properties": {
+                "year": 1883,
+                "month": 7,
+                "location": "Franklin",
+                "n": 1,
+                "longitude": -68.225999096,
+                "latitude": 44.585497658,
+                "ObjectId": 4
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 5,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -68.855033,
+                    43.783473
+                ]
+            },
+            "properties": {
+                "year": 1883,
+                "month": 7,
+                "location": "Matinicus Rock",
+                "n": 2,
+                "longitude": -68.855033,
+                "latitude": 43.783473,
+                "ObjectId": 5
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 6,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -71.48139,
+                    41.3615
+                ]
+            },
+            "properties": {
+                "year": 1883,
+                "month": 7,
+                "location": "Point Judith",
+                "n": 2,
+                "longitude": -71.48139,
+                "latitude": 41.3615,
+                "ObjectId": 6
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 7,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -70.762245,
+                    43.071568
+                ]
+            },
+            "properties": {
+                "year": 1883,
+                "month": 7,
+                "location": "Portsmouth",
+                "n": 3,
+                "longitude": -70.762245,
+                "latitude": 43.071568,
+                "ObjectId": 7
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 8,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -68.09811741,
+                    44.39116851
+                ]
+            },
+            "properties": {
+                "year": 1883,
+                "month": 7,
+                "location": "Winter Harbor",
+                "n": 2,
+                "longitude": -68.09811741,
+                "latitude": 44.39116851,
+                "ObjectId": 8
+            }
+        }
+    ]
+}

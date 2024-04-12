@@ -45,13 +45,62 @@ map.on('style.load', () => {
     })
 });
 
+// Read the GeoJSON data
+fetch('Geojson-data/journals_test.geojson')
+.then(response => response.json())
+.then(data => {
+    // Extract coordinates from the point features
+    const coordinates = data.features.map(feature => feature.geometry.coordinates);
+
+    // Create a LineString geometry using the extracted coordinates
+    const lineString = {
+        type: 'LineString',
+        coordinates: coordinates
+    };
+
+    // Create a new GeoJSON object containing the LineString feature
+    const newGeoJSON = {
+        type: 'FeatureCollection',
+        features: [{
+            type: 'Feature',
+            geometry: lineString,
+            properties: {} // You can add properties if needed
+        }]
+    };
+
+    // Use or save the new GeoJSON object as needed
+    console.log(newGeoJSON); // Output the new GeoJSON object
+
+    // Add source for the line layer
+    map.addSource('loc-df-line', {
+        type: 'geojson',
+        data: newGeoJSON // Pass the GeoJSON object
+    });
+
+    // Add line layer to show up
+    map.addLayer({
+        "id": "loc-line",
+        "minzoom": 0,
+        "maxzoom": 22,
+        "type": "line",
+        "paint": {
+            'line-color': 'red',
+            'line-width': 2
+        },
+        "source": "loc-df-line",
+    });
+})
+.catch(error => {
+    console.error('Error loading GeoJSON:', error);
+});
+
 map.on('load', function() {
     map.addSource('loc-df', { //set the geojson
         type: 'geojson',
         data: 'Geojson-data/journals_test.geojson' //path for the json make sure to check the console (cmd + opt +J)
     });
     map.addLayer({ //this is the way to add geojson layer to show up
-        "id": "loc-df",
+        "id": "loc-point",
         "minzoom": 0,
         "maxzoom": 22,
         "type": "circle",
@@ -61,31 +110,6 @@ map.on('load', function() {
         "layout": {},
         "source": "loc-df",
     });
-
-    // Get GeoJSON data
-    var geojsonData = map.getSource('loc-df')._data;
-    // Animate movement of points
-    var currentIndex = 0;
-    var speedFactor = 10; // Adjust the speed factor as needed
-
-    function animatePoints() {
-        if (currentIndex < geojsonData.features.length - 1) {
-            var currentFeature = geojsonData.features[currentIndex];
-            var nextFeature = geojsonData.features[currentIndex + 1];
-
-            // Update point position on the map
-            // Use Mapbox GL JS API to move the point from current to next position
-
-            // Adjust timing based on timestamps
-            var timeDiff = new Date(nextFeature.properties.date_mdy) - new Date(currentFeature.properties.date_mdy);
-            setTimeout(animatePoints, timeDiff / speedFactor); // Adjust animation speed
-
-            currentIndex++;
-        }
-    };
-
-    // Start animation
-    animatePoints();
 });
 
 // Remaining code for spinning globe and other controls...
