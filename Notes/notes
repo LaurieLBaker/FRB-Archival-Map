@@ -12,6 +12,16 @@ questions:
 
 
 animate?
+
+
+//work on this more
+
+// Calculate the distance in kilometers between route start/end point.
+const lineDistance = turf.length(route.features[0]);
+// Number of steps to use in animation, more steps means a smoother arc and animation, but too many steps will result in a low frame rate
+const steps = 500;
+// Used to increment the value of the point measurement against the route.
+let counter = 0;
 map.on('load', function() {
     map.addSource('points', { //set the geojson
         type: 'geojson',

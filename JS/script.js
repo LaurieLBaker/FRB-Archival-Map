@@ -47,79 +47,78 @@ map.on('style.load', () => {
     })
 });
 
-//Adding the line layer, first we have to convert or fetch the geojson data that we have from points to line
-// Read the GeoJSON data
+// Read the GeoJSON data and add line layer
 fetch('Geojson-data/journals_test.geojson')
-.then(response => response.json())
-.then(data => {
-    // Extract coordinates from the point features
-    const coordinates = data.features.map(feature => feature.geometry.coordinates);
+    .then(response => response.json())
+    .then(data => {
+        // Extract coordinates from the point features
+        const coordinates = data.features.map(feature => feature.geometry.coordinates);
 
-    // Create a LineString geometry using the extracted coordinates
-    const lineString = {
-        type: 'LineString',
-        coordinates: coordinates
-    };
+        // Create a LineString geometry using the extracted coordinates
+        const lineString = {
+            type: 'LineString',
+            coordinates: coordinates
+        };
 
-    // Create a new GeoJSON object containing the LineString feature
-    const newGeoJSON = {
-        type: 'FeatureCollection',
-        features: [{
-            type: 'Feature',
-            geometry: lineString,
-            properties: {} // You can add properties if needed
-        }]
-    };
+        // Create a new GeoJSON object containing the LineString feature
+        const newGeoJSON = {
+            type: 'FeatureCollection',
+            features: [{
+                type: 'Feature',
+                geometry: lineString,
+                properties: {} // You can add properties if needed
+            }]
+        };
 
-    // Use or save the new GeoJSON object as needed
-    console.log(newGeoJSON); // Output the new GeoJSON object
+        // Use or save the new GeoJSON object as needed
+        console.log(newGeoJSON); // Output the new GeoJSON object
 
-    // Add source for the line layer
-    map.addSource('route', {
-        type: 'geojson',
-        data: newGeoJSON // Pass the GeoJSON object
+        // Add source for the line layer
+        map.addSource('route', {
+            type: 'geojson',
+            data: newGeoJSON // Pass the GeoJSON object
+        });
+
+        // Add line layer to show up
+        map.addLayer({
+            "id": "route",
+            "minzoom": 0,
+            "maxzoom": 22,
+            "type": "line",
+            "paint": {
+                'line-color': 'red',
+                'line-width': 2
+            },
+            "source": "route",
+        });
+
+        // Adding the point data
+        map.on('load', function() {
+            map.addSource('points', { //set the geojson
+                type: 'geojson',
+                data: data // Use the fetched GeoJSON data directly
+            });
+            map.addLayer({ //this is the way to add geojson layer to show up
+                'id': 'points',
+                'source': 'points',
+                'type': 'symbol',
+                'layout': {
+                    // This icon is a part of the Mapbox Streets style.
+                    // To view all images available in a Mapbox style, open
+                    // the style in Mapbox Studio and click the "Images" tab.
+                    // To add a new image to the style at runtime see
+                    // https://docs.mapbox.com/mapbox-gl-js/example/add-image/
+                    'icon-image': 'ferry',
+                    'icon-size': 1.5,
+                    'icon-allow-overlap': true,
+                    'icon-ignore-placement': true
+                }
+            });
+        });
+    })
+    .catch(error => {
+        console.error('Error loading GeoJSON:', error);
     });
-
-    // Add line layer to show up
-    map.addLayer({
-        "id": "route",
-        "minzoom": 0,
-        "maxzoom": 22,
-        "type": "line",
-        "paint": {
-            'line-color': 'red',
-            'line-width': 2
-        },
-        "source": "route",
-    });
-})
-.catch(error => {
-    console.error('Error loading GeoJSON:', error);
-});
-
-//Adding the point data
-map.on('load', function() {
-    map.addSource('points', { //set the geojson
-        type: 'geojson',
-        data: 'Geojson-data/journals_test.geojson' //path for the json make sure to check the console (cmd + opt +J)
-    });
-    map.addLayer({ //this is the way to add geojson layer to show up
-        'id': 'points',
-        'source': 'points',
-        'type': 'symbol',
-        'layout': {
-            // This icon is a part of the Mapbox Streets style.
-            // To view all images available in a Mapbox style, open
-            // the style in Mapbox Studio and click the "Images" tab.
-            // To add a new image to the style at runtime see
-            // https://docs.mapbox.com/mapbox-gl-js/example/add-image/
-            'icon-image': 'ferry',
-            'icon-size': 1.5,
-            'icon-allow-overlap': true,
-            'icon-ignore-placement': true
-        }
-    });
-})
 
 // Remaining code for spinning globe and other controls
 // The following values can be changed to control rotation speed:
