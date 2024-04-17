@@ -117,65 +117,58 @@ fetch('Geojson-data/journals_test.geojson')
         });
         let running = false;
         function animate() {
-            running = true;
-            document.getElementById('replay').disabled = true;
             const start =
                 route.features[0].geometry.coordinates[
-                counter >= steps ? counter - 1 : counter
+                    counter >= steps ? counter - 1 : counter
                 ];
             const end =
                 route.features[0].geometry.coordinates[
-                counter >= steps ? counter : counter + 1
+                    counter >= steps ? counter : counter + 1
                 ];
             if (!start || !end) {
+                // Animation finished, reset state
                 running = false;
                 document.getElementById('replay').disabled = false;
                 return;
             }
+        
             // Update point geometry to a new position based on counter denoting
             // the index to access the arc
             point.features[0].geometry.coordinates =
                 route.features[0].geometry.coordinates[counter];
-
+        
             // Calculate the bearing to ensure the icon is rotated to match the route arc
-            // The bearing is calculated between the current point and the next point, except
-            // at the end of the arc, which uses the previous point and the current point
             point.features[0].properties.bearing = turf.bearing(
                 turf.point(start),
                 turf.point(end)
             );
-
+        
             // Update the source with this new data
             map.getSource('point').setData(point);
-
+        
             // Request the next frame of animation as long as the end has not been reached
             if (counter < steps) {
                 requestAnimationFrame(animate);
             }
-
+        
             counter = counter + 1;
         }
 
         document.getElementById('replay').addEventListener('click', () => {
-            if (running) {
-                void 0;
-            } else {
+            if (!running) {
                 // Set the coordinates of the original point back to origin
                 point.features[0].geometry.coordinates = origin;
-    
+        
                 // Update the source layer
                 map.getSource('point').setData(point);
-    
+        
                 // Reset the counter
                 counter = 0;
-    
+        
                 // Restart the animation
-                animate(counter);
+                animate();
             }
-        });
-    
-        // Start the animation
-        animate(counter);
+        });        
 
     })
     .catch(error => {
