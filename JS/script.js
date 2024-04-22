@@ -1,6 +1,6 @@
 
 //A beginning to import the layout of the map and API information
-mapboxgl.accessToken = 'pk.eyJ1IjoiaXNhbnRvc28yNCIsImEiOiJjbHJoMnpqa28wM3g2MmptZjNhY2I0azZ4In0.hf_HgbByCza1aIBdbbbaOw';
+mapboxgl.accessToken = 'pk.eyJ1IjoiaXNhbnRvc28yNCIsImEiOiJjbHJoMnpqa28wM3g2MmptZjNhY2I0azZ4In0.hf_HgbByCza1aIBdbbbaOw'; //mapbox token you get from the account
 const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/light-v11',
@@ -56,7 +56,7 @@ const point = {
             'properties': {},
             'geometry': {
                 'type': 'Point',
-                'coordinates': [ -70.47166478, 43.11916619] //why its only one point
+                'coordinates': [ -70.47166478, 43.11916619] //only select one point of location
             }
         }
     ]
@@ -64,7 +64,7 @@ const point = {
 
 // A simple line from origin to destination.
 // Read the GeoJSON data and add line layer
-fetch('Geojson-data/journals_test.geojson')
+fetch('Geojson-data/journals_test.geojson') //data input
     .then(response => response.json())
     .then(data => {
         // Extract coordinates from the point features
@@ -97,7 +97,7 @@ fetch('Geojson-data/journals_test.geojson')
         // Number of steps to use in the arc and animation, more steps means
         // a smoother arc and animation, but too many steps will result in a
         // low frame rate
-        const steps = 500;
+        const steps = 1000;
 
         // Draw an arc between the `origin` & `destination` of the two points
         for (let i = 0; i < lineDistance; i += lineDistance / steps) {
@@ -130,7 +130,8 @@ fetch('Geojson-data/journals_test.geojson')
             "type": "line",
             "paint": {
                 'line-color': 'red',
-                'line-width': 2
+                'line-width': 2,
+                'line-dasharray': [2,2]
             },
             "source": "route",
         });

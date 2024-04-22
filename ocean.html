@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sailing Route</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiaXNhbnRvc28yNCIsImEiOiJjbHJoMnpqa28wM3g2MmptZjNhY2I0azZ4In0.hf_HgbByCza1aIBdbbbaOw';
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/navigation-preview-day-v4', // Use a navigation style for maritime use
+        center: [-70.47166478, 43.11916619], // Center the map on a starting point
+        zoom: 8 // Adjust the zoom level as needed
+    });
+
+    // Manually define waypoints along safe passages
+    const waypoints = [
+        [-70.47166478, 43.11916619], // Starting point
+        // Add more waypoints as needed
+        // [longitude, latitude]
+    ];
+
+    // Convert waypoints to a GeoJSON Feature Collection
+    const geojson = {
+        type: 'FeatureCollection',
+        features: waypoints.map((coord, index) => {
+            return {
+                type: 'Feature',
+                properties: {
+                    name: `Waypoint ${index + 1}`
+                },
+                geometry: {
+                    type: 'Point',
+                    coordinates: coord
+                }
+            };
+        })
+    };
+
+    // Add the sailing route to the map
+    map.on('load', () => {
+        map.addSource('sailing-route', {
+            type: 'geojson',
+            data: geojson
+        });
+
+        // Add a layer to display the sailing route as points
+        map.addLayer({
+            id: 'sailing-route-points',
+            type: 'circle',
+            source: 'sailing-route',
+            paint: {
+                'circle-color': '#007cbf',
+                'circle-radius': 5
+            }
+        });
+
+        // Add a layer to display lines between waypoints
+        map.addLayer({
+            id: 'sailing-route-lines',
+            type: 'line',
+            source: 'sailing-route',
+            paint: {
+                'line-color': '#007cbf',
+                'line-width': 2
+            },
+            layout: {
+                'line-join': 'round',
+                'line-cap': 'round'
+            }
+        });
+
+        // Fit the map bounds to the sailing route
+        const bounds = waypoints.reduce((bounds, coord) => {
+            return bounds.extend(coord);
+        }, new mapboxgl.LngLatBounds(waypoints[0], waypoints[0]));
+        map.fitBounds(bounds, { padding: 50 });
+    });
+</script>
+
+</body>
+</html>
