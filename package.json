@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/isantoso24/Archival-Map/issues"
   },
-  "homepage": "https://github.com/isantoso24/Archival-Map#readme"
+  "homepage": "https://github.com/isantoso24/Archival-Map#readme",
+  "dependencies": {
+    "searoute-js": "^0.1.0"
+  }
 }
