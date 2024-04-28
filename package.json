@@ -1,26 +1,11 @@
 {
   "name": "archival-map",
   "version": "1.0.0",
-  "description": "This is for archival map of a journal",
-  "main": "index.js",
+  "description": "To upload csv to geojson with type and features using arcgis online",
+  "main": "test.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/isantoso24/Archival-Map.git"
-  },
-  "keywords": [
-    "archival",
-    "map"
-  ],
-  "author": "Muhammad Ilham AR Santoso",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/isantoso24/Archival-Map/issues"
-  },
-  "homepage": "https://github.com/isantoso24/Archival-Map#readme",
-  "dependencies": {
-    "searoute-js": "^0.1.0"
-  }
+  "author": "",
+  "license": "ISC"
 }
