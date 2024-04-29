@@ -12,7 +12,7 @@ const destination = {
 };
 
 // Read GeoJSON data containing many origin points
-const originGeoJSON = JSON.parse(fs.readFileSync('Geojson-data/journals_test.geojson', 'utf8'));
+const originGeoJSON = JSON.parse(fs.readFileSync('Geojson-data/loc_mention.geojson', 'utf8'));
 
 // Initialize an array to store the routes
 const routes = [];
