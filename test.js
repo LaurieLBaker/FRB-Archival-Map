@@ -8,8 +8,7 @@ const destination = {
     "geometry": {
         "type": "Point",
         "coordinates": [
-            -68.09811741,
-            44.39116851
+            -70.925438,42.349497
         ]
     }
 };
