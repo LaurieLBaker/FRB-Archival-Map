@@ -1,35 +1,51 @@
+const fs = require('fs');
 const searoute = require('searoute-js');
-const fs = require('fs'); // If using Node.js to read GeoJSON data from a file
 
-// Define the destination GeoJSON point:
+// Define the destination GeoJSON point
 const destination = {
     "type": "Feature",
     "properties": {},
     "geometry": {
         "type": "Point",
-        "coordinates": [
-            -70.925438,42.349497
-        ]
+        "coordinates": [-70.925438, 42.349497]
     }
 };
 
 // Read GeoJSON data containing many origin points (assuming it's stored in a file)
-// Replace 'your_geojson_file.json' with the path to your GeoJSON file
 const originGeoJSON = JSON.parse(fs.readFileSync('Geojson-data/journals_test.geojson', 'utf8'));
 
-// Initialize an array to store the routes
-const routes = [];
+// Initialize an array to store the GeoJSON features for each route
+const routeFeatures = [];
 
 // Loop through each origin point in the GeoJSON data
 originGeoJSON.features.forEach(originFeature => {
     // Calculate the route between the current origin point and the fixed destination
     const route = searoute(originFeature.geometry.coordinates, destination.geometry.coordinates);
-    // Add the route to the routes array
-    routes.push(route);
+    
+    // Create a GeoJSON feature for the route
+    const routeFeature = {
+        "type": "Feature",
+        "geometry": {
+            "type": "LineString",
+            "coordinates": [originFeature.geometry.coordinates, route.coordinates] // Use the original origin point and the calculated route coordinates
+        },
+        "properties": originFeature.properties // Preserve properties from the original origin point
+    };
+
+    // Add the route feature to the array
+    routeFeatures.push(routeFeature);
 });
 
-// Convert routes array to a JSON string
-const routesJSON = JSON.stringify(routes);
+// Create a GeoJSON object with the route features
+const geojsonOutput = {
+    "type": "FeatureCollection",
+    "features": routeFeatures
+};
 
-// Log the GeoJSON data for all routes
-console.log(routesJSON);
+// Convert the GeoJSON object to a JSON string
+const geojsonString = JSON.stringify(geojsonOutput);
+
+// Write the GeoJSON string to a file
+fs.writeFileSync('routes.geojson', geojsonString);
+
+console.log("GeoJSON file 'routes.geojson' created successfully.");
