@@ -18,7 +18,7 @@ const point = {
             'properties': {},
             'geometry': {
                 'type': 'Point',
-                'coordinates': [130, 20] //why its only one point
+                'coordinates': [ -70.47166478, 43.11916619] //why its only one point
             }
         }
     ]
@@ -26,7 +26,7 @@ const point = {
 
 // A simple line from origin to destination.
 // Read the GeoJSON data and add line layer
-fetch('Geojson-data/realRouteTest.geojson')
+fetch('Geojson-data/journals_test.geojson')
     .then(response => response.json())
     .then(data => {
         // Extract coordinates from the point features
