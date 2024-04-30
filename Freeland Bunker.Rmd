@@ -197,8 +197,8 @@ loc_1885 <- loc_df_entry %>%
 
 ```{r export}
 folder_path <- "/cloud/project/location-year-layer"
-file_path <- file.path(folder_path,"loc_1885")
-write.csv(loc_1885, file = file_path, row.names = FALSE)
+#file_path <- file.path(folder_path,"loc_1886.csv")
+#write.csv(loc_1886, file = file_path, row.names = FALSE)
 ```
 
 
