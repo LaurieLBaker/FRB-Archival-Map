@@ -36,8 +36,11 @@ journal_1882 <- read_excel("Dataset/journal_1882.xlsx")
 journal_1883 <- read_excel("Dataset/journal_1883.xlsx")
 journal_1884 <- read_excel("Dataset/journal_1884.xlsx")
 journal_1885 <- read_excel("Dataset/journal_1885.xlsx")
-journal_1886 <- read_excel("Dataset/journal_1886.xlsx")
 location_coordinates <- read_excel("Dataset/location_coordinates.xlsx")
+```
+```{r rename-1878}
+journal_1878$date_mdy <- journal_1878$...1
+  
 ```
 
 
@@ -58,11 +61,7 @@ journal_1884$journal <- 13
 journal_1885$journal <- 14
 
 
-journals <- dplyr::bind_rows(journal_1871_1872, journal_1873, journal_1874, 
-                             journal_1875, journal_1876, journal_1877, 
-                             journal_1878, journal_1879, journal_1880, 
-                             journal_1881, journal_1882, journal_1883,
-                             journal_1884, journal_1885)
+journals <- dplyr::bind_rows(journal_1871_1872, journal_1873, journal_1874, journal_1875, journal_1876, journal_1877, journal_1878, journal_1879, journal_1880, journal_1881, journal_1882, journal_1883, journal_1884, journal_1885)
 ```
 
 ```{r select-data}
@@ -116,7 +115,7 @@ loc_df <- journals_subset_loc_year %>%
 ```{r export data}
 #write.csv(loc_df, file = "loc_df.csv", row.names = FALSE)
 #write.csv(loc_mention, file = "loc_mention.csv", row.names = FALSE)
-write.csv(journals_test, file = "journals_test.csv", row.names = FALSE)
+#write.csv(journals_test, file = "journals_test.csv", row.names = FALSE)
 ```
 
 
@@ -149,6 +148,59 @@ loc_df_entry <- journals_subset %>%
          longitude = as.numeric(longitude)) %>%
   na.omit()
 ```
+
+**Selection data for layers**
+here i separated all data based on the year to create the layers for easy delivery in map
+```{r yearly-layers}
+loc_1871_72 <- loc_df_entry %>%
+  filter(year == c("1871","1872"))
+
+loc_1873 <- loc_df_entry %>%
+  filter(year == "1873")
+
+loc_1874 <- loc_df_entry %>%
+  filter(year == "1874")
+
+loc_1875 <- loc_df_entry %>%
+  filter(year == "1875")
+
+loc_1876 <- loc_df_entry %>%
+  filter(year == "1876")
+
+loc_1877 <- loc_df_entry %>%
+  filter(year == "1877")
+
+loc_1878 <- loc_df_entry %>%
+  filter(year == "1878")
+
+loc_1879 <- loc_df_entry %>%
+  filter(year == "1879")
+
+loc_1880 <- loc_df_entry %>%
+  filter(year == "1880")
+
+loc_1881 <- loc_df_entry %>%
+  filter(year == "1881")
+
+loc_1882 <- loc_df_entry %>%
+  filter(year == "1882")
+
+loc_1883 <- loc_df_entry %>%
+  filter(year == "1883")
+
+loc_1884 <- loc_df_entry %>%
+  filter(year == "1884")
+
+loc_1885 <- loc_df_entry %>%
+  filter(year == "1885")
+```
+
+```{r export}
+folder_path <- "/cloud/project/location-year-layer"
+file_path <- file.path(folder_path,"loc_1885")
+write.csv(loc_1885, file = file_path, row.names = FALSE)
+```
+
 
 words to think about why freeland is at the exact location:
 - Anchored | anchored
