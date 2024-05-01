@@ -196,9 +196,9 @@ loc_1885 <- loc_df_entry %>%
 ```
 
 ```{r export}
-folder_path <- "/cloud/project/location-year-layer"
-#file_path <- file.path(folder_path,"loc_1886.csv")
-#write.csv(loc_1886, file = file_path, row.names = FALSE)
+folder_path <- "/cloud/project/location-mention"
+file_path <- file.path(folder_path,"loc_shot_hunt.csv")
+write.csv(loc_shot_hunt, file = file_path, row.names = FALSE)
 ```
 
 
@@ -212,6 +212,45 @@ words to think about why freeland is at the exact location:
 loc_mention <- loc_df_entry %>%
   filter(str_detect(string = journal_entry, pattern = "Anchored|anchored|discharge|discharged|went|wood|wharf|arriving|arrived"), ignore.case = TRUE)
 ```
+
+```{r}
+loc_wrote_letter <- loc_df_entry %>%
+  filter(str_detect(string = journal_entry, pattern = "Write a letter|write a letter|Wrote a letter|wrote a letter|wrote letter|write letter|Wrote letter|Write letter"), ignore.case = TRUE)
+
+loc_read_letter <- loc_df_entry %>%
+  filter(str_detect(string = journal_entry, pattern = "Read a letter|read a letter|Reed a letter|reed a letter|reed letter|read letter|Read letter|Reed letter"), ignore.case = TRUE)
+
+loc_will <- loc_df_entry %>%
+  filter(str_detect(string = journal_entry, pattern = "a will"), ignore.case = TRUE)
+
+loc_trade <- loc_df_entry %>%
+  filter(str_detect(string = journal_entry, pattern = "trade|Trade"), ignore.case = TRUE)
+
+loc_mail <- loc_df_entry %>%
+  filter(str_detect(string = journal_entry, pattern = "mail|mails|Mail|mails"), ignore.case = TRUE)
+
+loc_fish <- loc_df_entry %>%
+  filter(str_detect(string = journal_entry, pattern = "fish|Fish"), ignore.case = TRUE)
+
+loc_wood <- loc_df_entry %>%
+  filter(str_detect(string = journal_entry, pattern = "cutting wood|Cutting wood| of wood"), ignore.case = TRUE)
+
+loc_farm <- loc_df_entry %>%
+  filter(str_detect(string = journal_entry, pattern = "farm|Farm"), ignore.case = TRUE)
+
+loc_stone <- loc_df_entry %>%
+  filter(str_detect(string = journal_entry, pattern = "stones|loading stone|hauling stone|hauled stone| stone"), ignore.case = TRUE)
+
+loc_coal <- loc_df_entry %>%
+  filter(str_detect(string = journal_entry, pattern = "coal|Coal|coals|Coals"), ignore.case = TRUE)
+
+loc_lobster <- loc_df_entry %>%
+  filter(str_detect(string = journal_entry, pattern = "lobster|Lobster"), ignore.case = TRUE)
+
+loc_shot_hunt <- loc_df_entry %>%
+  filter(str_detect(string = journal_entry, pattern = "shoot|Shoot|Shot|shot|hunt|hunting|Hunt|Hunting"), ignore.case = TRUE)
+```
+
 
 ```{r check-leaflet}
 leaflet(data = loc_mention) %>%
