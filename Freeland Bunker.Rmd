@@ -119,10 +119,8 @@ loc_df <- journals_subset_loc_year %>%
 ```
 
 
-```{r show-distinct-loc}
-journals_subset_loc %>%
-  filter(str_detect(string = location, pattern = "Cra")) %>%
-  distinct(location)
+```{r change-reed}
+journals_subset$journal_entry <- gsub("Reed|reed", "received", journals_subset$journal_entry)
 ```
 
 ```{r create-thermometer}
@@ -197,8 +195,8 @@ loc_1885 <- loc_df_entry %>%
 
 ```{r export}
 folder_path <- "/cloud/project/location-mention"
-file_path <- file.path(folder_path,"loc_shot_hunt.csv")
-write.csv(loc_shot_hunt, file = file_path, row.names = FALSE)
+file_path <- file.path(folder_path,"loc_read_letter.csv")
+write.csv(loc_read_letter, file = file_path, row.names = FALSE)
 ```
 
 
@@ -209,8 +207,8 @@ words to think about why freeland is at the exact location:
 - arriving
 
 ```{r desc-entry}
-loc_mention <- loc_df_entry %>%
-  filter(str_detect(string = journal_entry, pattern = "Anchored|anchored|discharge|discharged|went|wood|wharf|arriving|arrived"), ignore.case = TRUE)
+#loc_mention <- loc_df_entry %>%
+  #filter(str_detect(string = journal_entry, pattern = "Anchored|anchored|discharge|discharged|went|wood|wharf|arriving|arrived"), ignore.case = TRUE)
 ```
 
 ```{r}
@@ -218,7 +216,7 @@ loc_wrote_letter <- loc_df_entry %>%
   filter(str_detect(string = journal_entry, pattern = "Write a letter|write a letter|Wrote a letter|wrote a letter|wrote letter|write letter|Wrote letter|Write letter"), ignore.case = TRUE)
 
 loc_read_letter <- loc_df_entry %>%
-  filter(str_detect(string = journal_entry, pattern = "Read a letter|read a letter|Reed a letter|reed a letter|reed letter|read letter|Read letter|Reed letter"), ignore.case = TRUE)
+  filter(str_detect(string = journal_entry, pattern = "Read a letter|read a letter|Received a letter|received a letter|received letter|read letter|Read letter|Received letter"), ignore.case = TRUE)
 
 loc_will <- loc_df_entry %>%
   filter(str_detect(string = journal_entry, pattern = "a will"), ignore.case = TRUE)
@@ -246,6 +244,9 @@ loc_coal <- loc_df_entry %>%
 
 loc_lobster <- loc_df_entry %>%
   filter(str_detect(string = journal_entry, pattern = "lobster|Lobster"), ignore.case = TRUE)
+
+loc_shot_hunt <- loc_df_entry %>%
+  filter(str_detect(string = journal_entry, pattern = "shoot|Shoot|Shot|shot|hunt|hunting|Hunt|Hunting"), ignore.case = TRUE)
 
 loc_shot_hunt <- loc_df_entry %>%
   filter(str_detect(string = journal_entry, pattern = "shoot|Shoot|Shot|shot|hunt|hunting|Hunt|Hunting"), ignore.case = TRUE)
