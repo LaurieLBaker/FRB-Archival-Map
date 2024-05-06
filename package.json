@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "csvtogeojson": "^0.0.2",
     "fs": "^0.0.1-security",
     "searoute-js": "^0.1.0"
   }

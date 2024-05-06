@@ -3,8 +3,7 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoiaXNhbnRvc28yNCIsImEiOiJjbHJoMnpqa28wM3g2MmptZjNhY2I0azZ4In0.hf_HgbByCza1aIBdbbbaOw'; //mapbox token you get from the account
 const map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/light-v11',
-    projection: 'globe', // Display the map as a globe, since satellite-v9 defaults to Mercator
+    style: 'mapbox://styles/isantoso24/clvv6w8xq06bn01ph4u60fwkh',
     zoom: 1.5,
     center: [-90, 40]
 });
@@ -12,39 +11,6 @@ const map = new mapboxgl.Map({
 //Styling the map aesthetic how it looks
 map.on('style.load', () => {
     map.setFog({}); // Set the default atmosphere style
-    map.addLayer({ //set the bathymetry style
-        "id": "depth",
-        "type": "fill",
-        "paint": {
-            "fill-color": [
-                "interpolate",
-                [
-                    "linear"
-                ],
-                [
-                    "get",
-                    "min_depth"
-                ],
-                0,
-                "hsl(201, 93%, 54%)",
-                684,
-                "hsl(201, 94%, 45%)",
-                1932,
-                "hsl(201, 94%, 37%)",
-                3217,
-                "hsl(201, 95%, 31%)",
-                4327,
-                "hsl(201, 94%, 23%)",
-                5731,
-                "hsl(201, 93%, 17%)",
-                7000,
-                "hsl(201, 94%, 15%)"
-            ]
-        },
-        "layout": {},
-        "source": "composite",
-        "source-layer": "depth"
-    })
 });
 // A single point that animates along the route.
 // Coordinates are initially set to origin.
