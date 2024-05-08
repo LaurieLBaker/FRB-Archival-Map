@@ -194,9 +194,9 @@ loc_1885 <- loc_df_entry %>%
 ```
 
 ```{r export}
-folder_path <- "/cloud/project/location-mention"
-file_path <- file.path(folder_path,"loc_read_letter.csv")
-write.csv(loc_read_letter, file = file_path, row.names = FALSE)
+folder_path <- "/cloud/project/location-year-layer"
+file_path <- file.path(folder_path,"loc_1873.csv")
+write.csv(loc_1873, file = file_path, row.names = FALSE)
 ```
 
 
@@ -250,6 +250,9 @@ loc_shot_hunt <- loc_df_entry %>%
 
 loc_shot_hunt <- loc_df_entry %>%
   filter(str_detect(string = journal_entry, pattern = "shoot|Shoot|Shot|shot|hunt|hunting|Hunt|Hunting"), ignore.case = TRUE)
+
+loc_sail <- loc_df_entry %>%
+  filter(str_detect(string = journal_entry, pattern = "sail|Sail"), ignore.case = TRUE)
 ```
 
 
