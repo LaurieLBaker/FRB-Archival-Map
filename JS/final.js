@@ -7,31 +7,43 @@ const map = new mapboxgl.Map({
 });
 
 map.on('style.load', () => {
-    map.setFog({}); // Set the default atmosphere style
+    map.setFog({
+        "range": [0.8, 8],
+        "color": "#A7885B",
+        "horizon-blend": 0.5,
+        "high-color": "#245bde",
+        "space-color": "#000000",
+        "star-intensity": 0.15
+    }); // Set the default atmosphere style
 });
 
+// Define layer groups
+const yearlyLayers = ['1871', '1872', '1873', '1874', '1875', '1876', '1877', '1878', '1879', '1880', '1881', '1882', '1864', '1885'];
+const itemLayers = ['coal', 'farm', 'fish', 'lobster', 'mail', 'read_letter', 'hunt', 'stone', 'trade', 'wood', 'wrote_letter'];
+
+// Add layers to the map
 map.on('load', function () {
-    map.addSource('yearly', { //add yearly data
+    map.addSource('yearly', {
         type: 'geojson',
         data: 'Geojson-data/loc_df_entry.geojson'
     });
 
-    map.addSource('item', { //add items data
+    map.addSource('item', {
         type: 'geojson',
         data: 'Geojson-data/loc_item.geojson'
     });
 
     // Add a layer to visualize the dataset
-    map.addLayer({
-        id: '1871',
-        type: 'circle',
-        source: 'yearly',
-        paint: {
-            'circle-color': 'red',
-            'circle-radius': 3
-        },
-        filter: ['==', ['get', 'year'], 1871]
-    });
+        map.addLayer({
+            id: '1871',
+            type: 'circle',
+            source: 'yearly',
+            paint: {
+                'circle-color': 'red',
+                'circle-radius': 3
+            },
+            filter: ['==', ['get', 'year'], 1871]
+        });
     map.addLayer({
         id: '1872',
         type: 'circle',
@@ -42,8 +54,8 @@ map.on('load', function () {
         },
         filter: ['==', ['get', 'year'], 1872]
     });
-    map.addLayer({
-        id: '1873',
+        map.addLayer({
+            id: '1873',
         type: 'circle',
         source: 'yearly',
         paint: {
@@ -165,14 +177,14 @@ map.on('load', function () {
 //Break
     map.addLayer({
         id: 'coal',
-        type: 'circle',
-        source: 'item',
-        paint: {
-            'circle-color': 'green',
-            'circle-radius': 3
-        },
-        filter: ['==', ['get', 'item'], "coal"]
-    });
+            type: 'circle',
+            source: 'item',
+            paint: {
+                'circle-color': 'green',
+                'circle-radius': 3
+            },
+            filter: ['==', ['get', 'item'], "coal"]
+        });
     map.addLayer({
         id: 'farm',
         type: 'circle',
@@ -272,6 +284,66 @@ map.on('load', function () {
             'circle-radius': 3
         },
         filter: ['==', ['get', 'item'], "wrote_letter"]
+    });
+});
+
+
+// Add click event listener to show popups
+map.on('click', function (e) {
+    const features = map.queryRenderedFeatures(e.point, { layers: yearlyLayers.concat(itemLayers) });
+
+    if (!features.length) {
+        return;
+    }
+
+    const feature = features[0];
+
+    // Create popup HTML content with a button
+    const popupContent = `
+        <h2>${feature.properties.year}</h2>
+        <p>${feature.properties.journal_entry}</p>
+        <h3>${feature.properties.location}</h3>
+        <button id="nextPointButton">Next Point</button>
+    `;
+
+    // Create a popup with the HTML content
+    const popup = new mapboxgl.Popup()
+        .setLngLat(feature.geometry.coordinates)
+        .setHTML(popupContent)
+        .addTo(map);
+
+    // Add event listener to the button
+    document.getElementById('nextPointButton').addEventListener('click', function() {
+        // Close the current popup
+        popup.remove();
+
+        // Get the index of the current feature
+        const currentIndex = features.indexOf(feature);
+
+        // Get the next feature (if available)
+        const nextFeature = features[currentIndex + 1];
+
+        if (nextFeature) {
+            // Create popup HTML content for the next feature
+            const nextPopupContent = `
+                <h2>${nextFeature.properties.year}</h2>
+                <p>${nextFeature.properties.journal_entry}</p>
+                <h3>${nextFeature.properties.location}</h3>
+                <button id="nextPointButton">Next Point</button>
+            `;
+
+            // Create a new popup with the HTML content for the next feature
+            const nextPopup = new mapboxgl.Popup()
+                .setLngLat(nextFeature.geometry.coordinates)
+                .setHTML(nextPopupContent)
+                .addTo(map);
+            
+            // Add event listener to the button in the new popup
+            document.getElementById('nextPointButton').addEventListener('click', function() {
+                // Close the new popup when the button is clicked
+                nextPopup.remove();
+            });
+        }
     });
 });
 
