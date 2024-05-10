@@ -18,7 +18,7 @@ map.on('style.load', () => {
 });
 
 // Define layer groups
-const yearlyLayers = ['1871', '1872', '1873', '1874', '1875', '1876', '1877', '1878', '1879', '1880', '1881', '1882', '1864', '1885'];
+const yearlyLayers = ['1871', '1872', '1873', '1874', '1875', '1876', '1877', '1878', '1879', '1880', '1881', '1882', '1883', '1884', '1885'];
 const itemLayers = ['coal', 'farm', 'fish', 'lobster', 'mail', 'read_letter', 'hunt', 'stone', 'trade', 'wood', 'wrote_letter'];
 
 // Add layers to the map
@@ -34,16 +34,16 @@ map.on('load', function () {
     });
 
     // Add a layer to visualize the dataset
-        map.addLayer({
-            id: '1871',
-            type: 'circle',
-            source: 'yearly',
-            paint: {
-                'circle-color': 'red',
-                'circle-radius': 3
-            },
-            filter: ['==', ['get', 'year'], 1871]
-        });
+    map.addLayer({
+        id: '1871',
+        type: 'circle',
+        source: 'yearly',
+        paint: {
+            'circle-color': 'red',
+            'circle-radius': 3
+        },
+        filter: ['==', ['get', 'year'], 1871]
+    });
     map.addLayer({
         id: '1872',
         type: 'circle',
@@ -155,7 +155,7 @@ map.on('load', function () {
         filter: ['==', ['get', 'year'], 1882]
     });
     map.addLayer({
-        id: '1864',
+        id: '1883',
         type: 'circle',
         source: 'yearly',
         paint: {
@@ -163,6 +163,16 @@ map.on('load', function () {
             'circle-radius': 3
         },
         filter: ['==', ['get', 'year'], 1883]
+    });
+    map.addLayer({
+        id: '1884',
+        type: 'circle',
+        source: 'yearly',
+        paint: {
+            'circle-color': 'red',
+            'circle-radius': 3
+        },
+        filter: ['==', ['get', 'year'], 1884]
     });
     map.addLayer({
         id: '1885',
@@ -283,10 +293,60 @@ map.on('load', function () {
             'circle-color': 'green',
             'circle-radius': 3
         },
-        filter: ['==', ['get', 'item'], "wrote_letter"]
+        filter: ['==', ['get', 'item'], "wrote letter"]
     });
 });
 
+// After the last frame rendered before the map enters an "idle" state.
+map.on('idle', () => {
+    // Enumerate ids of the layers.
+    const toggleableLayerIds = [
+        '1871', '1872', '1873', '1874', '1875', '1876',  '1877', '1878', '1879', '1880', '1881', '1882', '1883', '1884', '1885',
+        'coal', 'farm', 'fish', 'lobster', 'mail', 'read_letter', 'hunt', 'stone', 'trade', 'wood', 'wrote_letter'];
+
+    // Set up the corresponding toggle button for each layer.
+    for (const id of toggleableLayerIds) {
+        // Skip layers that already have a button set up.
+        if (document.getElementById(id)) {
+            continue;
+        }
+
+        // Create a link.
+        const link = document.createElement('a');
+        link.id = id;
+        link.href = '#';
+        link.textContent = id;
+        link.className = 'active';
+
+        // Show or hide layer when the toggle is clicked.
+        link.onclick = function (e) {
+            const clickedLayer = this.textContent;
+            e.preventDefault();
+            e.stopPropagation();
+
+            const visibility = map.getLayoutProperty(
+                clickedLayer,
+                'visibility'
+            );
+
+            // Toggle layer visibility by changing the layout object's visibility property.
+            if (visibility === 'visible') {
+                map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                this.className = '';
+            } else {
+                this.className = 'active';
+                map.setLayoutProperty(
+                    clickedLayer,
+                    'visibility',
+                    'visible'
+                );
+            }
+        };
+
+        const layers = document.getElementById('menu');
+        layers.appendChild(link);
+    }
+});
 
 // Add click event listener to show popups
 map.on('click', function (e) {
