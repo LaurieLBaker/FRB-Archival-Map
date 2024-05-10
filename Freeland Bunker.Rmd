@@ -264,7 +264,7 @@ loc_sail <- loc_df_entry %>%
 ```
 
 ```{r bind-items}
-loc_item <- bind_rows(loc_farm,loc_fish,loc_lobster,loc_mail,loc_read_letter,loc_shot_hunt,loc_stone,loc_trade,loc_wood,loc_wrote_letter)
+loc_item <- bind_rows(loc_coal,loc_farm,loc_fish,loc_lobster,loc_mail,loc_read_letter,loc_shot_hunt,loc_stone,loc_trade,loc_wood,loc_wrote_letter)
 ```
 
 
