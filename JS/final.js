@@ -30,7 +30,7 @@ map.on('load', function () {
 
     map.addSource('item', {
         type: 'geojson',
-        data: 'Geojson-data/loc_item.geojson'
+        data: 'Geojson-data/loc_item_fin.geojson'
     });
 
     // Add a layer to visualize the dataset
@@ -243,7 +243,7 @@ map.on('load', function () {
             'circle-color': 'green',
             'circle-radius': 3
         },
-        filter: ['==', ['get', 'item'], "read letter"]
+        filter: ['==', ['get', 'item'], "Read letter"]
     });
     map.addLayer({
         id: 'hunt',
@@ -298,55 +298,89 @@ map.on('load', function () {
 });
 
 // After the last frame rendered before the map enters an "idle" state.
-map.on('idle', () => {
-    // Enumerate ids of the layers.
-    const toggleableLayerIds = [
-        '1871', '1872', '1873', '1874', '1875', '1876',  '1877', '1878', '1879', '1880', '1881', '1882', '1883', '1884', '1885',
-        'coal', 'farm', 'fish', 'lobster', 'mail', 'read_letter', 'hunt', 'stone', 'trade', 'wood', 'wrote_letter'];
+map.on('load', () => {
+    // Define layers for each group
+    const yearLayers = [
+        '1871', '1872', '1873', '1874', '1875', '1876', '1877', '1878', '1879', '1880', '1881', '1882', '1883', '1884', '1885'
+    ];
 
-    // Set up the corresponding toggle button for each layer.
-    for (const id of toggleableLayerIds) {
-        // Skip layers that already have a button set up.
-        if (document.getElementById(id)) {
-            continue;
-        }
+    const itemLayers = [
+        'coal', 'farm', 'fish', 'lobster', 'mail', 'read_letter', 'hunt', 'stone', 'trade', 'wood', 'wrote_letter'
+    ];
 
-        // Create a link.
-        const link = document.createElement('a');
-        link.id = id;
-        link.href = '#';
-        link.textContent = id;
-        link.className = 'active';
+    // Function to create toggle buttons for each group
+    function createToggleButtons(layerGroup, parentElement, groupName) {
+        const groupTitle = document.createElement('div');
+        groupTitle.textContent = groupName;
+        groupTitle.className = 'group-title';
+        parentElement.appendChild(groupTitle);
 
-        // Show or hide layer when the toggle is clicked.
-        link.onclick = function (e) {
-            const clickedLayer = this.textContent;
-            e.preventDefault();
-            e.stopPropagation();
+        for (const id of layerGroup) {
+            // Create a link.
+            const link = document.createElement('a');
+            link.href = '#';
+            link.textContent = id;
+            link.className = 'layer-button';
 
-            const visibility = map.getLayoutProperty(
-                clickedLayer,
-                'visibility'
-            );
+            // Set layer visibility to 'none' when the map loads.
+            map.setLayoutProperty(id, 'visibility', 'none');
 
-            // Toggle layer visibility by changing the layout object's visibility property.
-            if (visibility === 'visible') {
-                map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-                this.className = '';
-            } else {
-                this.className = 'active';
-                map.setLayoutProperty(
-                    clickedLayer,
-                    'visibility',
-                    'visible'
+            // Show or hide layer when the toggle is clicked.
+            link.onclick = function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const visibility = map.getLayoutProperty(
+                    id,
+                    'visibility'
                 );
-            }
-        };
 
-        const layers = document.getElementById('menu');
-        layers.appendChild(link);
+                // Toggle layer visibility by changing the layout object's visibility property.
+                if (visibility === 'visible') {
+                    map.setLayoutProperty(id, 'visibility', 'none');
+                    this.classList.remove('active');
+                } else {
+                    this.classList.add('active');
+                    map.setLayoutProperty(
+                        id,
+                        'visibility',
+                        'visible'
+                    );
+                }
+            };
+
+            // Append the toggle button to the parent element
+            parentElement.appendChild(link);
+        }
     }
+
+    // Create a parent div for the year layers
+    const yearGroup = document.createElement('div');
+    createToggleButtons(yearLayers, yearGroup, 'Year Layers');
+
+    // Create a parent div for the item layers
+    const itemGroup = document.createElement('div');
+    createToggleButtons(itemLayers, itemGroup, 'Item Layers');
+
+    // Append the parent divs to the menu container
+    const menu = document.getElementById('menu');
+    menu.appendChild(yearGroup);
+    menu.appendChild(itemGroup);
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const toggleMenuButton = document.getElementById('toggleMenu');
+    const menu = document.getElementById('menu');
+
+    toggleMenuButton.addEventListener('click', function () {
+        if (menu.style.display === 'none' || menu.style.display === '') {
+            menu.style.display = 'block';
+        } else {
+            menu.style.display = 'none';
+        }
+    });
+});
+
 
 // Add click event listener to show popups
 map.on('click', function (e) {
