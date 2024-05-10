@@ -441,6 +441,114 @@ map.on('click', function (e) {
     });
 });
 
+const chapters = {
+    '1871': {
+        center: [-68.164458, 44.411313],
+        zoom: 1.5,
+        pitch: 5
+    },
+    '1872': {
+        center: [-68.221639, 44.396160],
+        bearing: 0, // its the direction of the 0 to 365 degree
+        zoom: 15,
+        pitch: 60 // the 3D ness of map looks
+    },
+    '1873': {
+        center: [-68.182394,44.329264],
+        zoom: 13,
+        speed: 0.6,
+        pitch: 40
+    },
+    '1874': {
+        center: [-68.210599,44.388361],
+        zoom: 12.3
+    },
+    '1875': {
+        center: [-68.193591,44.376660],
+        zoom: 15.3,
+        pitch: 20,
+        speed: 0.5
+    },
+    '1876': {
+        center: [-68.399086,44.284721],
+        zoom: 1.5,
+        bearing: 0,
+    },
+    '1877': {
+        center: [-68.332594,44.362517],
+        zoom: 17.3,
+        pitch: 40
+    },
+    '1878': {
+        center: [-68.366418,44.427352],
+        zoom: 14.3,
+        pitch: 20
+    }, 
+    '1879': {
+        center: [-68.366418,44.427352],
+        zoom: 14.3,
+        pitch: 20
+    },
+    '1880': {
+        center: [-68.366418,44.427352],
+        zoom: 14.3,
+        pitch: 20
+    },
+    '1881': {
+        center: [-68.366418,44.427352],
+        zoom: 14.3,
+        pitch: 20
+    },
+    '1882': {
+        center: [-68.366418,44.427352],
+        zoom: 14.3,
+        pitch: 20
+    },
+    '1883': {
+        center: [-68.366418,44.427352],
+        zoom: 14.3,
+        pitch: 20
+    },
+    '1884': {
+        center: [-68.366418,44.427352],
+        zoom: 14.3,
+        pitch: 20
+    },
+    '1885': {
+        center: [-68.366418,44.427352],
+        zoom: 14.3,
+        pitch: 20
+    }
+};
+
+let activeChapterName = '1871';
+function setActiveChapter(chapterName) {
+    if (chapterName === activeChapterName) return;
+
+    map.flyTo(chapters[chapterName]);
+
+    document.getElementById(chapterName).classList.add('active');
+    document.getElementById(activeChapterName).classList.remove('active');
+
+    activeChapterName = chapterName;
+}
+
+function isElementOnScreen(id) {
+    const element = document.getElementById(id);
+    const bounds = element.getBoundingClientRect();
+    return bounds.top < window.innerHeight && bounds.bottom > 0;
+}
+
+// On every scroll event, check which element is on screen
+window.onscroll = () => {
+    for (const chapterName in chapters) {
+        if (isElementOnScreen(chapterName)) {
+            setActiveChapter(chapterName);
+            break;
+        }
+    }
+};
+
 // The following values can be changed to control rotation speed:
 
 // At low zooms, complete a revolution every two minutes.
@@ -514,3 +622,7 @@ document.getElementById('btn-spin').addEventListener('click', (e) => {
 });
 
 spinGlobe();
+
+// Add zoom and rotation controls to the map.
+map.addControl(new mapboxgl.NavigationControl());
+map.addControl(new mapboxgl.FullscreenControl());
