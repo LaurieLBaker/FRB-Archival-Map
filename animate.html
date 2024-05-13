@@ -66,7 +66,7 @@ body { margin: 0; padding: 0; }
     map.on('style.load', () => {
     map.addSource('route', {
         type: 'geojson',
-        data: 'Geojson-data/routes.geojson' // Pass the GeoJSON object
+        data: 'routes.geojson' // Assuming the GeoJSON file is in the same directory as your HTML file
     });
 
     map.addLayer({

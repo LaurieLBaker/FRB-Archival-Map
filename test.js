@@ -12,22 +12,28 @@ const destination = {
 };
 
 // Read GeoJSON data containing many origin points
-const originGeoJSON = JSON.parse(fs.readFileSync('Geojson-data/loc_1876.geojson', 'utf8'));
+const originGeoJSON = JSON.parse(fs.readFileSync('Geojson-data/loc_df_entry.geojson', 'utf8'));
 
 // Initialize an array to store the routes
 const routes = [];
 
+// Define the year you want to filter
+const targetYear = 1876;
+
 // Loop through each origin point in the GeoJSON data
 originGeoJSON.features.forEach(originFeature => {
     try {
-        // Extract coordinates of the origin point
-        const originCoordinates = originFeature.geometry.coordinates;
+        // Check if the feature has a property "year" and if it matches the target year
+        if (originFeature.properties && originFeature.properties.year === targetYear) {
+            // Extract coordinates of the origin point
+            const originCoordinates = originFeature.geometry.coordinates;
 
-        // Calculate the route between the origin point and the destination
-        const route = searoute(originCoordinates, destination.geometry.coordinates);
+            // Calculate the route between the origin point and the destination
+            const route = searoute(originCoordinates, destination.geometry.coordinates);
 
-        // Add the route to the routes array
-        routes.push(route);
+            // Add the route to the routes array
+            routes.push(route);
+        }
     } catch (error) {
         console.error("Error calculating route:", error.message);
     }
