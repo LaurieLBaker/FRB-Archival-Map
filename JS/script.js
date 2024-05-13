@@ -22,7 +22,7 @@ const point = {
             'properties': {},
             'geometry': {
                 'type': 'Point',
-                'coordinates': [ -70.47166478, 43.11916619] //only select one point of location
+                'coordinates': [ -68.0667218220679, 44.3683756622474] //only select one point of location
             }
         }
     ]
@@ -30,7 +30,7 @@ const point = {
 
 // A simple line from origin to destination.
 // Read the GeoJSON data and add line layer
-fetch('Geojson-data/journals_test.geojson') //data input
+fetch('Geojson-data/routes_1876.geojson') //data input
     .then(response => response.json())
     .then(data => {
         // Extract coordinates from the point features

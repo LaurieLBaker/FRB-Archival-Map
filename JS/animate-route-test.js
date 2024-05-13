@@ -30,12 +30,17 @@ const point = {
 // Used to increment the value of the point measurement against the route.
 let counter = 0;
 
-// Number of steps to use in the animation, adjust as needed for smoother or faster animation
+// Number of steps to use in the animation, adjust as needed for smoother or slower animation
 const steps = 500;
+
+// Easing function for smoother animation
+function ease(t) {
+    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+}
 
 map.on('load', () => {
     // Load the GeoJSON file
-    fetch('Geojson-data/routes.geojson')
+    fetch('Geojson-data/routes_1876.geojson')
         .then(response => response.json())
         .then(data => {
             // Extract coordinates from GeoJSON data
@@ -87,10 +92,16 @@ map.on('load', () => {
                     return;
                 }
 
+                // Calculate the progress along the route (0 to 1)
+                const progress = counter / steps;
+
+                // Use easing function to smoothen the animation
+                const easedProgress = ease(progress);
+
                 // Calculate the interpolated position between current and next coordinates
                 const interpolatedPosition = [
-                    currentCoordinate[0] + (nextCoordinate[0] - currentCoordinate[0]) * (counter / steps),
-                    currentCoordinate[1] + (nextCoordinate[1] - currentCoordinate[1]) * (counter / steps)
+                    currentCoordinate[0] + (nextCoordinate[0] - currentCoordinate[0]) * easedProgress,
+                    currentCoordinate[1] + (nextCoordinate[1] - currentCoordinate[1]) * easedProgress
                 ];
 
                 // Update point geometry to the interpolated position
@@ -101,7 +112,7 @@ map.on('load', () => {
 
                 // Request the next frame of animation as long as the end has not been reached
                 if (counter < coordinates.length - 1) {
-                    requestAnimationFrame(animate);
+                    setTimeout(animate, 500); // Adjust the delay here (in milliseconds)
                 }
 
                 counter = counter + 1;
