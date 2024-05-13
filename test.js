@@ -12,19 +12,13 @@ const destination = {
 };
 
 // Read GeoJSON data containing many origin points
-const originGeoJSON = JSON.parse(fs.readFileSync('Geojson-data/loc_df_entry.geojson', 'utf8'));
-
-// Filter features based on the 'year' property
-const filteredGeoJSON = {
-    type: 'FeatureCollection',
-    features: originGeoJSON.features.filter(feature => feature.properties.year === 1876)
-};
+const originGeoJSON = JSON.parse(fs.readFileSync('Geojson-data/loc_1876.geojson', 'utf8'));
 
 // Initialize an array to store the routes
 const routes = [];
 
 // Loop through each origin point in the GeoJSON data
-filteredGeoJSON.features.forEach(originFeature => {
+originGeoJSON.features.forEach(originFeature => {
     try {
         // Extract coordinates of the origin point
         const originCoordinates = originFeature.geometry.coordinates;
