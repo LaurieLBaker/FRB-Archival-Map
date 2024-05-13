@@ -441,6 +441,7 @@ map.on('click', function (e) {
     });
 });
 
+//Add chapters for navigation
 const chapters = {
     '1871': {
         center: [-68.164458, 44.411313],
@@ -549,6 +550,7 @@ window.onscroll = () => {
     }
 };
 
+
 // The following values can be changed to control rotation speed:
 
 // At low zooms, complete a revolution every two minutes.
@@ -623,6 +625,13 @@ document.getElementById('btn-spin').addEventListener('click', (e) => {
 
 spinGlobe();
 
+//Add search bar for specific location
+map.addControl(
+    new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl
+    })
+);
 // Add zoom and rotation controls to the map.
 map.addControl(new mapboxgl.NavigationControl());
 map.addControl(new mapboxgl.FullscreenControl());
