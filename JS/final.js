@@ -55,7 +55,7 @@ function ease(t) {
 
 map.on('load', () => {
     // Load the GeoJSON file
-    fetch('Geojson-data/routes_1876.geojson')
+    fetch('Geojson-data/routesFin.geojson')
         .then(response => response.json())
         .then(data => {
             // Extract coordinates from GeoJSON data
@@ -85,9 +85,10 @@ map.on('load', () => {
             map.addLayer({
                 'id': 'point',
                 'source': 'point',
-                'type': 'circle',
+                'type': 'symbol',
                 'layout': {
-                    'icon-size': 1.5,
+                    'icon-image': 'sail',
+                    'icon-size': 0.15,
                     'icon-rotate': ['get', 'bearing'],
                     'icon-rotation-alignment': 'map',
                     'icon-allow-overlap': true,
@@ -432,7 +433,7 @@ map.on('load', function () {
 map.on('load', () => {
     // Define layers for each group
     const yearLayers = [
-        '1871', '1872', '1873', '1874', '1875', '1876', '1877', '1878', '1879', '1880', '1881', '1882', '1883', '1884', '1885'
+        'route','1871', '1872', '1873', '1874', '1875', '1876', '1877', '1878', '1879', '1880', '1881', '1882', '1883', '1884', '1885'
     ];
 
     const itemLayers = [
