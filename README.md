@@ -16,3 +16,5 @@ node filename
 
         , '1874', '1875', '1876', '1877', '1878', '1879', '1880', '1881', '1882', '1883', '1884', '1885',
         'coal', 'farm', 'fish', 'lobster', 'mail', 'read_letter', 'hunt', 'stone', 'trade', 'wood', 'wrote_letter'
+
+        mapbox://styles/isantoso24/clvv6w8xq06bn01ph4u60fwkh
