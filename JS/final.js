@@ -85,9 +85,8 @@ map.on('load', () => {
             map.addLayer({
                 'id': 'point',
                 'source': 'point',
-                'type': 'symbol',
+                'type': 'circle',
                 'layout': {
-                    'icon-image': 'ship',
                     'icon-size': 1.5,
                     'icon-rotate': ['get', 'bearing'],
                     'icon-rotation-alignment': 'map',
