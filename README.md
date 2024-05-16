@@ -1,4 +1,26 @@
 # Archival-Map
+"Atlantic Odyssey: Mapping the Winter Harbor Freeland Bunker's Journal (1871-1885)"
+Delve into the pages of Freeland Bunker's journal, a detailed account of his life in Winter Harbor, Maine, from 1871 to 1885. Each entry offers a glimpse into Bunker's daily activities, cherished by our local historical society.
+
+My project aims to map Bunker's journey over the years, highlighting significant events such as his memorable Atlantic voyage. Through the use of coding tools like R and GIS, alongside HTML and Mapbox GL JavaScript, I'm creating an interactive platform. Here, users can seamlessly explore Bunker's experiences and Winter Harbor's rich history.
+
+# Introduction
+
+# Features
+
+# Installation
+
+# Usage
+
+# Configuration
+
+# Contributing
+
+# Credits
+
+# Troubleshooting
+
+# FAQ
 To upload csv to geojson with type and features using arcgis online
 node filename
 
