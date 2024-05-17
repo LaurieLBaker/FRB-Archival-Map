@@ -1,3 +1,4 @@
+//This is to set the map or to get API for mapbox
 mapboxgl.accessToken = 'pk.eyJ1IjoiaXNhbnRvc28yNCIsImEiOiJjbHJoMnpqa28wM3g2MmptZjNhY2I0azZ4In0.hf_HgbByCza1aIBdbbbaOw';
 const map = new mapboxgl.Map({
     container: 'map',
@@ -6,6 +7,7 @@ const map = new mapboxgl.Map({
     center: [-90, 40]
 });
 
+//Load the Map Style
 map.on('style.load', () => {
     map.setFog({
         "range": [0.8, 8],
@@ -52,7 +54,7 @@ function ease(t) {
 }
 
 
-
+//Add the layer of route and animating route
 map.on('load', () => {
     // Load the GeoJSON file
     fetch('Geojson-data/routesFin.geojson')
@@ -78,7 +80,8 @@ map.on('load', () => {
                 'type': 'line',
                 'paint': {
                     'line-width': 2,
-                    'line-color': '#007cbf'
+                    'line-color': '#007cbf',
+                    'line-dasharray': [2,2]
                 }
             });
 
@@ -430,6 +433,7 @@ map.on('load', function () {
 });
 
 // After the last frame rendered before the map enters an "idle" state.
+// Adding the layer tab for colapsing toogle of "layer"
 map.on('load', () => {
     // Define layers for each group
     const yearLayers = [
@@ -524,54 +528,44 @@ map.on('click', function (e) {
 
     const feature = features[0];
 
-    // Create popup HTML content with a button
-    const popupContent = `
-        <h2>${feature.properties.year}</h2>
-        <p>${feature.properties.journal_entry}</p>
-        <h3>${feature.properties.location}</h3>
-        <button id="nextPointButton">Next Point</button>
-    `;
+    // Function to create and show popup
+    function showPopup(feature, features) {
+        // Create popup HTML content
+        const popupContent = `
+            <h2>${feature.properties.year}</h2>
+            <p>${feature.properties.journal_entry}</p>
+            <h3>${feature.properties.location}</h3>
+            <button id="nextPointButton">Next Point</button>
+        `;
 
-    // Create a popup with the HTML content
-    const popup = new mapboxgl.Popup()
-        .setLngLat(feature.geometry.coordinates)
-        .setHTML(popupContent)
-        .addTo(map);
+        // Create a popup with the HTML content
+        const popup = new mapboxgl.Popup()
+            .setLngLat(feature.geometry.coordinates)
+            .setHTML(popupContent)
+            .addTo(map);
 
-    // Add event listener to the button
-    document.getElementById('nextPointButton').addEventListener('click', function() {
-        // Close the current popup
-        popup.remove();
+        // Add event listener to the button
+        document.getElementById('nextPointButton').addEventListener('click', function() {
+            // Close the current popup
+            popup.remove();
 
-        // Get the index of the current feature
-        const currentIndex = features.indexOf(feature);
+            // Get the index of the current feature
+            const currentIndex = features.indexOf(feature);
 
-        // Get the next feature (if available)
-        const nextFeature = features[currentIndex + 1];
+            // Get the next feature (if available)
+            const nextFeature = features[currentIndex + 1];
 
-        if (nextFeature) {
-            // Create popup HTML content for the next feature
-            const nextPopupContent = `
-                <h2>${nextFeature.properties.year}</h2>
-                <p>${nextFeature.properties.journal_entry}</p>
-                <h3>${nextFeature.properties.location}</h3>
-                <button id="nextPointButton">Next Point</button>
-            `;
+            if (nextFeature) {
+                // Recursively call showPopup with the next feature
+                showPopup(nextFeature, features);
+            }
+        });
+    }
 
-            // Create a new popup with the HTML content for the next feature
-            const nextPopup = new mapboxgl.Popup()
-                .setLngLat(nextFeature.geometry.coordinates)
-                .setHTML(nextPopupContent)
-                .addTo(map);
-            
-            // Add event listener to the button in the new popup
-            document.getElementById('nextPointButton').addEventListener('click', function() {
-                // Close the new popup when the button is clicked
-                nextPopup.remove();
-            });
-        }
-    });
+    // Initial call to show the popup for the first feature
+    showPopup(feature, features);
 });
+
 
 //Add chapters for navigation
 const chapters = {
@@ -581,23 +575,23 @@ const chapters = {
         pitch: 5
     },
     '1872': {
-        center: [-68.221639, 44.396160],
+        center: [-68.091870,44.391789],
         bearing: 0, // its the direction of the 0 to 365 degree
         zoom: 15,
         pitch: 60 // the 3D ness of map looks
     },
     '1873': {
-        center: [-68.182394,44.329264],
+        center: [-68.091870,44.391789],
         zoom: 13,
         speed: 0.6,
         pitch: 40
     },
     '1874': {
-        center: [-68.210599,44.388361],
+        center: [-68.091870,44.391789],
         zoom: 12.3
     },
     '1875': {
-        center: [-68.193591,44.376660],
+        center: [-68.091870,44.391789],
         zoom: 15.3,
         pitch: 20,
         speed: 0.5
