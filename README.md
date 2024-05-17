@@ -40,3 +40,13 @@ node filename
         'coal', 'farm', 'fish', 'lobster', 'mail', 'read_letter', 'hunt', 'stone', 'trade', 'wood', 'wrote_letter'
 
         mapbox://styles/isantoso24/clvv6w8xq06bn01ph4u60fwkh
+
+
+        
+
+        <h1>"Atlantic Odyssey: Mapping the Winter Harbor Freeland Bunker's Journal (1871-1885)"</h1>
+            <h3>By: Muhammad Ilham AR Santoso</h3>
+            <p>
+                Delve into the pages of Freeland Bunker's journal, a detailed account of his life in Winter Harbor, Maine, from 1871 to 1885. Each entry offers a glimpse into Bunker's daily activities, cherished by our local historical society.</p>
+            <p>My project aims to map Bunker's journey over the years, highlighting significant events such as his memorable Atlantic voyage. Through the use of coding tools like R and GIS, alongside HTML and Mapbox GL JavaScript, I'm creating an interactive platform. Here, users can seamlessly explore Bunker's experiences and Winter Harbor's rich history.
+            </p>

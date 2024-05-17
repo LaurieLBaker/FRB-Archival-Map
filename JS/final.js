@@ -569,7 +569,7 @@ map.on('click', function (e) {
 
 //Add chapters for navigation
 const chapters = {
-    '1871': {
+    '1871': {//beginning
         center: [-68.164458, 44.411313],
         zoom: 1.5,
         pitch: 5
@@ -586,25 +586,10 @@ const chapters = {
         speed: 0.6,
         pitch: 40
     },
-    '1874': {
-        center: [-68.091870,44.391789],
-        zoom: 12.3
-    },
-    '1875': {
-        center: [-68.091870,44.391789],
-        zoom: 15.3,
-        pitch: 20,
-        speed: 0.5
-    },
     '1876': {
         center: [-68.399086,44.284721],
         zoom: 1.5,
         bearing: 0,
-    },
-    '1877': {
-        center: [-68.332594,44.362517],
-        zoom: 17.3,
-        pitch: 40
     },
     '1878': {
         center: [-68.366418,44.427352],
@@ -626,17 +611,7 @@ const chapters = {
         zoom: 14.3,
         pitch: 20
     },
-    '1882': {
-        center: [-68.366418,44.427352],
-        zoom: 14.3,
-        pitch: 20
-    },
     '1883': {
-        center: [-68.366418,44.427352],
-        zoom: 14.3,
-        pitch: 20
-    },
-    '1884': {
         center: [-68.366418,44.427352],
         zoom: 14.3,
         pitch: 20
