@@ -1,5 +1,5 @@
 # Archival-Map
-![Archival Map of freeland bunker journey]([https://example.com/winter_harbor_photo.jpg](https://github.com/isantoso24/Archival-Map/blob/main/Screenshot%202024-05-24%20at%2017.12.36.png))
+![Archival Map of freeland bunker journey](https://github.com/isantoso24/Archival-Map/blob/main/Screenshot%202024-05-24%20at%2017.12.36.png)
 
 
 "Atlantic Odyssey: Mapping the Winter Harbor Freeland Bunker's Journal (1871-1885)"
