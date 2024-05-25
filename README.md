@@ -24,12 +24,12 @@ Final.JS: Javascript for the mapbox and features to call the data.(JS file)
 Map.html: HTML script for the interface and css template to call the Javascript file
 
 # Installation
-installation to create route follow the guide on npm website for searoute.js
+installation to create route follow the guide on npm website for [searoute.js](https://www.npmjs.com/package/searoute-js)
 
 otherwise no need to install anything just simply put your own mapbox token in JS file and youre good to go.
 
 # Usage
-intended for Muhammad Ilham Akbar Ramaditya Santoso senior project in collaboration with Winter Harbor Historical Society to obtain the degree of human ecology at the college of the atlantic. Observe and feedback are very welcome.
+intended for Muhammad Ilham Akbar Ramaditya Santoso [senior project](https://arcg.is/1HCGKf1) in collaboration with Winter Harbor Historical Society to obtain the degree of human ecology at the college of the atlantic. Observe and feedback are very welcome. 
 
 # Configuration
 Adjust theme and visuals follow the guides in mapbox docs
@@ -46,7 +46,7 @@ I created this website for Winter Harbor Historical Soceity to inspire other tha
 - Muhammad Ilham Akbar Ramaditya Santoso
 
 # Troubleshooting
-Follow guidance in npm and mapbox docs. 
+Follow guidance in [npm](https://www.npmjs.com/package/searoute-js) and [mapbox docs](https://docs.mapbox.com/). 
 
 For specific inquiries contact me
 
