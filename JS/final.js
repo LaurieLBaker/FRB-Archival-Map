@@ -3,13 +3,13 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiaXNhbnRvc28yNCIsImEiOiJjbHJoMnpqa28wM3g2MmptZ
 const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/isantoso24/clvv6w8xq06bn01ph4u60fwkh', // Add my own style
-    zoom: 1.5,
-    center: [-90, 40]
+    zoom: 1.5, //set the zoom for the map
+    center: [-90, 40] //set the center point
 });
 
 //Load the Map Style
 map.on('style.load', () => {
-    map.setFog({
+    map.setFog({//set the halo effect around the globe
         "range": [0.8, 8],
         "color": "#A7885B",
         "horizon-blend": 0.5,
@@ -19,12 +19,12 @@ map.on('style.load', () => {
     }); // Set the default atmosphere style
 });
 
-// Define layer groups
+// Define layer groups 
 const yearlyLayers = ['1871', '1872', '1873', '1874', '1875', '1876', '1877', '1878', '1879', '1880', '1881', '1882', '1883', '1884', '1885'];
 const itemLayers = ['coal', 'farm', 'fish', 'lobster', 'mail', 'read_letter', 'hunt', 'stone', 'trade', 'wood', 'wrote_letter'];
 
 // Winter Harbor
-const origin = [-67.8554, 44.0567];
+const origin = [-67.8554, 44.0567]; //this is where the boat start
 
 // A single point that animates along the route.
 // Coordinates are initially set to the first point of the route.
@@ -64,17 +64,17 @@ map.on('load', () => {
             const coordinates = data.features[0].geometry.coordinates;
 
             // Add a source and layer displaying the route line
-            map.addSource('route', {
+            map.addSource('route', { //creating an ID to call for add.layer
                 'type': 'geojson',
                 'data': data // Use the fetched GeoJSON data
             });
 
-            map.addSource('point', {
+            map.addSource('point', { //creating an ID to call for add.layer
                 'type': 'geojson',
                 'data': point
             });
 
-            map.addLayer({
+            map.addLayer({ //this is showing freeland's overall route
                 'id': 'route',
                 'source': 'route',
                 'type': 'line',
@@ -85,12 +85,12 @@ map.on('load', () => {
                 }
             });
 
-            map.addLayer({
+            map.addLayer({ //adding the ship icon
                 'id': 'point',
                 'source': 'point',
                 'type': 'symbol',
                 'layout': {
-                    'icon-image': 'sail',
+                    'icon-image': 'sail', //icon being called
                     'icon-size': 0.15,
                     'icon-rotate': ['get', 'bearing'],
                     'icon-rotation-alignment': 'map',
@@ -135,7 +135,7 @@ map.on('load', () => {
 
                 counter = counter + 1;
             }
-
+//Create the replay function button
             document.getElementById('replay').addEventListener('click', () => {
                 if (!running) {
                     // Set the coordinates of the original point back to origin
@@ -433,7 +433,7 @@ map.on('load', function () {
 });
 
 // After the last frame rendered before the map enters an "idle" state.
-// Adding the layer tab for colapsing toogle of "layer"
+// Adding the layer tab for colapsing toogle of "layer" 
 map.on('load', () => {
     // Define layers for each group
     const yearLayers = [
