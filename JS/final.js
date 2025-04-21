@@ -535,6 +535,7 @@ map.on('click', function (e) {
             <h2>${feature.properties.year}</h2>
             <p>${feature.properties.journal_entry}</p>
             <h3>${feature.properties.location}</h3>
+            ${feature.properties.image_url ? `<img src="${feature.properties.image_url}" alt="Journal image" style="width:100%; height:auto; margin-top:10px;">` : ''}
             <button id="nextPointButton">Next Point</button>
         `;
 
